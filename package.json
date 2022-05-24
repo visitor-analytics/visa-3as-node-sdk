@@ -2,10 +2,18 @@
   "name": "3as-node-sdk",
   "version": "1.0.0",
   "description": "NodeJS SDK for 3AS Companies",
-  "main": "index.js",
+  "source": "src/index.ts",
+  "main": "dist/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "parcel watch",
+    "build": "parcel build"
   },
   "author": "os@visitor-analytics.io",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.0",
+    "@commitlint/config-conventional": "^17.0.0",
+    "parcel": "^2.5.0",
+    "standard-version": "^9.5.0"
+  }
 }
