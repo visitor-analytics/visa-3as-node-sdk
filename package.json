@@ -1,5 +1,5 @@
 {
-  "name": "3as-node-sdk",
+  "name": "@visa/3as-node-sdk",
   "version": "0.1.0",
   "description": "NodeJS SDK for 3AS Companies",
   "source": "src/index.ts",
