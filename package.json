@@ -3,17 +3,22 @@
   "version": "1.0.0",
   "description": "NodeJS SDK for 3AS Companies",
   "source": "src/index.ts",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "scripts": {
-    "watch": "parcel watch",
-    "build": "parcel build"
+    "build": "tsc"
   },
   "author": "os@visitor-analytics.io",
   "license": "ISC",
   "devDependencies": {
     "@commitlint/cli": "^17.0.0",
     "@commitlint/config-conventional": "^17.0.0",
-    "parcel": "^2.5.0",
-    "standard-version": "^9.5.0"
+    "standard-version": "^9.5.0",
+    "typescript": "^4.7.2"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.2",
+    "got": "^12.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "pino": "^7.11.0"
   }
 }
