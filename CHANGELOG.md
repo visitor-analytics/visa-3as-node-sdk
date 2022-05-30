@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://gitlab.va-endpoint.com/visa/sdks/3as/nodejs/compare/v0.1.0...v0.1.1) (2022-05-30)
+
+
+### Bug Fixes
+
+* add missing visa registry prefix to package.json name field ([65943e5](https://gitlab.va-endpoint.com/visa/sdks/3as/nodejs/commit/65943e5ad9bae2e8ed4c327d62d89d2349bd2334))
+
 ## 0.1.0 (2022-05-30)
 
 
