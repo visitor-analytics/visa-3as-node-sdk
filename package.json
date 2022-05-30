@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsc"
   },
+  "type": "module",
   "author": "os@visitor-analytics.io",
   "license": "ISC",
   "devDependencies": {
