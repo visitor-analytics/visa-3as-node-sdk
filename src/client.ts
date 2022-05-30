@@ -1,4 +1,4 @@
-import got, { Got } from "got";
+import axios, { Axios } from "axios";
 import pino, { Logger } from "pino";
 import { AccessToken, AccessTokenFactory } from "./token-signing";
 import { CompanyDetails } from "./common/types";
@@ -11,7 +11,7 @@ export class Client {
   #logLevel: "debug" | "info" | "error" | "silent";
 
   #host: string;
-  #http: Got;
+  #http: Axios;
   #version: string = "rc";
   #environment: "production" | "test" = "test";
 
@@ -21,7 +21,7 @@ export class Client {
     readonly logLevel?: "debug" | "info" | "error" | "silent";
     readonly environment: "production" | "test";
   }) {
-    this.#http = got;
+    this.#http = axios;
     this.#host = params.host;
     this.#logger = pino();
     this.#logLevel = params.logLevel ?? "debug";
@@ -34,22 +34,38 @@ export class Client {
     );
   }
 
-  async get<T>(path: string): Promise<T> {
+  async get<T>(path: string): Promise<T | undefined> {
     if (this.#accessToken.isExpired) {
       this.#logInfo("Access token expired. Obtaining new access token.");
       this.#accessToken = this.#accessToken.refresh();
     }
 
-    return this.#http
-      .get(this.#host + path, {
+    try {
+      const response = await this.#http.get<T>(this.#host + path, {
         headers: {
           Authorization: "Bearer " + this.#accessToken.value,
         },
-      })
-      .json<T>();
+      });
+
+      this.#logInfo({
+        path,
+        method: "get",
+        success: true,
+        data: response.data,
+      });
+
+      return response.data;
+    } catch (error) {
+      this.#logError({
+        path,
+        method: "get",
+        success: false,
+        msg: (error as Error).message,
+      });
+    }
   }
 
-  #logInfo(msg: string): void {
+  #logInfo(msg: string | object): void {
     this.#logger.info(
       JSON.stringify({
         msg,
@@ -60,7 +76,7 @@ export class Client {
     );
   }
 
-  #logError(msg: string): void {
+  #logError(msg: string | object): void {
     this.#logger.info(
       JSON.stringify({
         msg,

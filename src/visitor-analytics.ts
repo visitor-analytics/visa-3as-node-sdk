@@ -28,7 +28,7 @@ export class VisitorAnalytics {
     });
   }
 
-  async packages(): Promise<Package[]> {
+  async packages(): Promise<Package[] | undefined> {
     return this.#packages.all();
   }
 }
