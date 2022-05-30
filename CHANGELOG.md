@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://gitlab.va-endpoint.com/visa/sdks/nodejs/compare/v0.1.3...v0.1.4) (2022-05-30)
+
+
+### Bug Fixes
+
+* switch got http client with axios ([77a9298](https://gitlab.va-endpoint.com/visa/sdks/nodejs/commit/77a9298fbbec4a57991295e3f6fbe9d98e31256c))
+
 ### [0.1.3](https://gitlab.va-endpoint.com/visa/sdks/3as/nodejs/compare/v0.1.2...v0.1.3) (2022-05-30)
 
 
