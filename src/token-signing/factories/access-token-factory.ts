@@ -19,12 +19,10 @@ export class AccessTokenFactory {
       ver: clientVersion,
     };
 
-    if (alg === "RS256") {
-      return new AccessToken(
-        header,
-        payload,
-        new RS256TokenSigner(company.privateKey)
-      );
-    }
+    return new AccessToken(
+      header,
+      payload,
+      new RS256TokenSigner(company.privateKey)
+    );
   }
 }

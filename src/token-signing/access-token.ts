@@ -12,27 +12,37 @@ export class AccessToken {
     private readonly payload: TokenPayload,
     private readonly tokenSigner: TokenSigner
   ) {
-    this.#sign();
+    const now = dayjs();
+
+    this.#iat = now.unix();
+    this.#exp = now.add(10, "minutes").unix();
+    this.#value = this.#sign();
   }
 
-  #sign(): AccessToken {
+  #sign(): string {
     try {
-      this.#iat = Date.now();
-      this.#exp = dayjs().add(30, "minutes").unix();
-      this.#value = this.tokenSigner.sign(JSON.stringify(this.payload), {
+      return this.tokenSigner.sign(JSON.stringify(this.payload), {
         kid: this.header.kid,
       });
-
-      return this;
     } catch (error) {
       throw new Error(
         JSON.stringify({
           type: "TokenSignerError",
           message: "Failed to sign access token",
-          details: error.message,
+          details: (error as Error).message,
         })
       );
     }
+  }
+
+  refresh(): AccessToken {
+    const now = dayjs();
+
+    this.#iat = now.unix();
+    this.#exp = now.add(10, "minutes").unix();
+    this.#value = this.#sign();
+
+    return this;
   }
 
   get isExpired(): boolean {
@@ -45,9 +55,5 @@ export class AccessToken {
 
   get value(): string {
     return this.#value;
-  }
-
-  get refresh(): AccessToken {
-    return this.#sign();
   }
 }

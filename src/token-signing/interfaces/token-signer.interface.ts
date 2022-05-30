@@ -1,5 +1,3 @@
-import { sign } from "jsonwebtoken";
-
 export interface TokenSigner {
   sign(
     payload: string,

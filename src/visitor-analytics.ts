@@ -1,4 +1,5 @@
 import { Client } from "./client";
+import { VisaParams } from "./common";
 import { Packages } from "./packages/packages";
 import { Package } from "./packages/types/package.type";
 
@@ -8,29 +9,19 @@ export class VisitorAnalytics {
   // http
   #client: Client;
 
-  constructor(
-    private readonly params: {
-      company: {
-        id: string;
-        domain: string;
-        privateKey: string;
-      };
-      environment: "production" | "test";
-      logLevel: "silent" | "info" | "error" | "debug";
-    }
-  ) {
-    this.#setupClient(this.params);
+  constructor(private readonly params: VisaParams) {
+    this.#client = this.#setupClient(this.params);
 
     this.#packages = new Packages(this.#client);
   }
 
-  #setupClient(params) {
-    this.#client = new Client({
-      host: "http://localhost:3000",
+  #setupClient(params: VisaParams): Client {
+    return new Client({
+      host: "http://localhost:8080",
       company: {
-        id: params.companyId,
-        domain: params.domain,
-        privateKey: params.companyPrivateKey,
+        id: params.company.id,
+        domain: params.company.domain,
+        privateKey: params.company.privateKey,
       },
       logLevel: params.logLevel,
       environment: params.environment,

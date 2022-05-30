@@ -8,11 +8,11 @@ export class Client {
   #accessToken: AccessToken;
   // logging
   #logger: Logger;
-  #logLevel: "debug" | "info" | "error" | "silent" = "debug";
+  #logLevel: "debug" | "info" | "error" | "silent";
 
   #host: string;
   #http: Got;
-  #version: string;
+  #version: string = "rc";
   #environment: "production" | "test" = "test";
 
   constructor(params: {
@@ -22,8 +22,9 @@ export class Client {
     readonly environment: "production" | "test";
   }) {
     this.#http = got;
+    this.#host = params.host;
     this.#logger = pino();
-    this.#logLevel = params.logLevel;
+    this.#logLevel = params.logLevel ?? "debug";
     this.#environment = params.environment;
 
     this.#accessToken = new AccessTokenFactory().getAccessToken(
@@ -36,7 +37,7 @@ export class Client {
   async get<T>(path: string): Promise<T> {
     if (this.#accessToken.isExpired) {
       this.#logInfo("Access token expired. Obtaining new access token.");
-      this.#accessToken = this.#accessToken.refresh;
+      this.#accessToken = this.#accessToken.refresh();
     }
 
     return this.#http
