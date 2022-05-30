@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://gitlab.va-endpoint.com/visa/sdks/3as/nodejs/compare/v0.1.2...v0.1.3) (2022-05-30)
+
+
+### Bug Fixes
+
+* update tsconfig.json ([ad06657](https://gitlab.va-endpoint.com/visa/sdks/3as/nodejs/commit/ad06657ce02c417860c876e9ea34ece2d334e453))
+
 ### [0.1.2](https://gitlab.va-endpoint.com/visa/sdks/3as/nodejs/compare/v0.1.1...v0.1.2) (2022-05-30)
 
 
