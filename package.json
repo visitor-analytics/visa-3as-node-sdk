@@ -1,15 +1,17 @@
 {
-  "name": "@visa/3as-node-sdk",
+  "name": "@visa/3as-sdk",
   "version": "0.1.4",
   "description": "NodeJS SDK for 3AS Companies",
-  "source": "src/index.ts",
+  "author": "os@visitor-analytics.io",
+  "license": "ISC",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "build": "tsc"
   },
-  "type": "module",
-  "author": "os@visitor-analytics.io",
-  "license": "ISC",
   "devDependencies": {
     "@commitlint/cli": "^17.0.0",
     "@commitlint/config-conventional": "^17.0.0",
