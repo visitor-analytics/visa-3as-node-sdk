@@ -13,9 +13,35 @@ npm install visa-3as --save
 ```js
 var VisitorAnalytics = require("visa-3as");
 
-var visa = new VisitorAnalytics({
-  companyId: "REPLACE_WITH_YOUR_COMPANY_ID",
-  companyDomain: "REPLACE_WITH_YOUR_COMPANY_DOMAIN_URL",
-  companyPrivateKey: "REPLACE_WITH_PRIVATE_RSA_KEY",
+const visa = new VisitorAnalytics({
+  company: {
+    id: "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
+    domain: "http://3as-company-domain.io",
+    privateKey: `...`,
+  },
+  environment: "test",
+  logLevel: LogLevel.INFO,
+});
+```
+
+## Promises
+
+Every API call returns a promise.
+
+// add details on response format on success & error
+
+## Packages
+
+### List all available packages
+
+```js
+visa.packages.get();
+```
+
+### Get a single package by ID
+
+```js
+visa.packages.get({
+  id: "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
 });
 ```

@@ -1,43 +1,56 @@
 import axios, { Axios } from "axios";
-import pino, { Logger } from "pino";
+import axiosRetry from "axios-retry";
 import { AccessToken, AccessTokenFactory } from "./token-signing";
 import { CompanyDetails } from "./common/types";
+import { Logger, LogLevel } from "./common/logging";
+
+axiosRetry(axios, { retries: 3 });
 
 export class Client {
   // authentication
   #accessToken: AccessToken;
   // logging
   #logger: Logger;
-  #logLevel: "debug" | "info" | "error" | "silent";
 
   #host: string;
   #http: Axios;
   #version: string = "rc";
-  #environment: "production" | "test" = "test";
 
   constructor(params: {
     readonly host: string;
     readonly company: CompanyDetails;
-    readonly logLevel?: "debug" | "info" | "error" | "silent";
+    readonly logLevel: LogLevel;
     readonly environment: "production" | "test";
   }) {
     this.#http = axios;
     this.#host = params.host;
-    this.#logger = pino();
-    this.#logLevel = params.logLevel ?? "debug";
-    this.#environment = params.environment;
+    this.#logger = new Logger({
+      env: params.environment,
+      level: params.logLevel,
+    });
 
     this.#accessToken = new AccessTokenFactory().getAccessToken(
       "RS256",
       params.company,
       this.#version
     );
+
+    this.#logger.logInfo("Generated access token.");
+    this.#logger.logDebug(this.#accessToken.value);
   }
 
   async get<T>(path: string): Promise<T | undefined> {
+    this.#logger.logInfo({
+      method: "GET",
+      path: this.#host + path,
+      clientVer: this.#version,
+    });
+
     if (this.#accessToken.isExpired) {
-      this.#logInfo("Access token expired. Obtaining new access token.");
       this.#accessToken = this.#accessToken.refresh();
+
+      this.#logger.logInfo("Refreshed access token.");
+      this.#logger.logDebug(this.#accessToken.value);
     }
 
     try {
@@ -47,43 +60,11 @@ export class Client {
         },
       });
 
-      this.#logInfo({
-        path,
-        method: "get",
-        success: true,
-        data: response.data,
-      });
+      this.#logger.logDebug(response.data as unknown as object);
 
       return response.data;
     } catch (error) {
-      this.#logError({
-        path,
-        method: "get",
-        success: false,
-        msg: (error as Error).message,
-      });
+      this.#logger.logError((error as Error).message);
     }
-  }
-
-  #logInfo(msg: string | object): void {
-    this.#logger.info(
-      JSON.stringify({
-        msg,
-        host: this.#host,
-        env: this.#environment,
-        clientVersion: this.#version,
-      })
-    );
-  }
-
-  #logError(msg: string | object): void {
-    this.#logger.info(
-      JSON.stringify({
-        msg,
-        host: this.#host,
-        env: this.#environment,
-        clientVersion: this.#version,
-      })
-    );
   }
 }
