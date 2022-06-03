@@ -1,3 +1,5 @@
+import { LogLevel } from "../logging";
+
 export type VisaParams = {
   company: {
     id: string;
@@ -5,5 +7,5 @@ export type VisaParams = {
     privateKey: string;
   };
   environment: "production" | "test";
-  logLevel: "silent" | "info" | "error" | "debug";
+  logLevel: LogLevel;
 };
