@@ -3,26 +3,30 @@ import { TokenSigner } from "./interfaces";
 import { TokenHeader, TokenPayload } from "./types";
 
 export class AccessToken {
-  #iat: number;
-  #exp: number;
+  #tokenHeader: TokenHeader;
+  #tokenPayload: TokenPayload;
+  #tokenSigner: TokenSigner;
+
   #value: string;
 
-  constructor(
-    private readonly header: TokenHeader,
-    private readonly payload: TokenPayload,
-    private readonly tokenSigner: TokenSigner
-  ) {
-    const now = dayjs();
+  constructor(params: {
+    payload: TokenPayload;
+    header: TokenHeader;
+    signer: TokenSigner;
+  }) {
+    this.#tokenHeader = params.header;
+    this.#tokenPayload = params.payload;
+    this.#tokenSigner = params.signer;
 
-    this.#iat = now.unix();
-    this.#exp = now.add(10, "minutes").unix();
     this.#value = this.#sign();
   }
 
   #sign(): string {
     try {
-      return this.tokenSigner.sign(JSON.stringify(this.payload), {
-        kid: this.header.kid,
+      return this.#tokenSigner.sign(this.#tokenPayload, {
+        header: {
+          kid: this.#tokenHeader.kid,
+        },
       });
     } catch (error) {
       throw new Error(
@@ -38,19 +42,19 @@ export class AccessToken {
   refresh(): AccessToken {
     const now = dayjs();
 
-    this.#iat = now.unix();
-    this.#exp = now.add(10, "minutes").unix();
+    this.#tokenPayload.exp = now
+      .add(this.#tokenPayload.exp - this.#tokenPayload.iat, "seconds")
+      .unix();
+
+    this.#tokenPayload.iat = now.unix();
+
     this.#value = this.#sign();
 
     return this;
   }
 
   get isExpired(): boolean {
-    return this.#exp <= Date.now();
-  }
-
-  get issuedAt(): number {
-    return this.#iat;
+    return dayjs().unix() > this.#tokenPayload.exp;
   }
 
   get value(): string {
