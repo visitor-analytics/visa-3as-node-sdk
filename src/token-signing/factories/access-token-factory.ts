@@ -19,10 +19,10 @@ export class AccessTokenFactory {
       ver: clientVersion,
     };
 
-    return new AccessToken(
+    return new AccessToken({
       header,
       payload,
-      new RS256TokenSigner(company.privateKey)
-    );
+      signer: new RS256TokenSigner(company.privateKey),
+    });
   }
 }

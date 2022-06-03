@@ -1,8 +1,10 @@
 export interface TokenSigner {
   sign(
-    payload: string,
+    payload: object,
     options: {
-      kid: string;
+      header: {
+        kid: string;
+      };
     }
   ): string;
 }
