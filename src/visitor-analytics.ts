@@ -1,7 +1,6 @@
 import { Client } from "./client";
 import { VisaParams } from "./common";
 import { Packages } from "./packages/packages";
-import { Package } from "./packages/types/package.type";
 
 export class VisitorAnalytics {
   // company data
@@ -23,12 +22,12 @@ export class VisitorAnalytics {
         domain: params.company.domain,
         privateKey: params.company.privateKey,
       },
-      logLevel: params.logLevel,
       environment: params.environment,
+      logLevel: params.logLevel,
     });
   }
 
-  async packages(): Promise<Package[] | undefined> {
-    return this.#packages.all();
+  get packages(): Packages {
+    return this.#packages;
   }
 }
