@@ -6,7 +6,7 @@ import { Logger, LogLevel } from "./common/logging";
 
 axiosRetry(axios, { retries: 3 });
 
-export class Client {
+export class HttpClient {
   // authentication
   #accessToken: AccessToken;
   // logging

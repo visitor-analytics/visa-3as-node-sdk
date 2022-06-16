@@ -1,17 +1,16 @@
-import { Client } from "../client";
-import { PackageWhere } from "./types/package-where.type";
+import { HttpClient } from "../http-client";
 import { Package } from "./types/package.type";
 
 export class Packages {
-  constructor(private readonly client: Client) {}
+  #path: string = "/v2/3as/packages";
 
-  async get(where?: PackageWhere): Promise<Package[] | undefined> {
-    let path = "/v2/3as/packages";
+  constructor(private readonly client: HttpClient) {}
 
-    if (where?.id) {
-      path = path + "/" + where.id;
-    }
+  async list(): Promise<Package[] | undefined> {
+    return this.client.get<Package[] | undefined>(this.#path);
+  }
 
-    return this.client.get<Package[] | undefined>(path);
+  async getById(packageId: string): Promise<Package | undefined> {
+    return this.client.get<Package | undefined>(`${this.#path}/${this.#path}`);
   }
 }

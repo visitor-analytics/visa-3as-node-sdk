@@ -1,21 +1,26 @@
-import { Client } from "./client";
+import { HttpClient } from "./http-client";
 import { VisaParams } from "./common";
 import { Packages } from "./packages/packages";
+import { Clients } from "./clients/clients";
+import { Client } from "./clients/types/client.type";
 
 export class VisitorAnalytics {
   // company data
   #packages: Packages;
+  // company clients
+  #clients: Clients;
   // http
-  #client: Client;
+  #httpClient: HttpClient;
 
   constructor(private readonly params: VisaParams) {
-    this.#client = this.#setupClient(this.params);
+    this.#httpClient = this.#setupClient(this.params);
 
-    this.#packages = new Packages(this.#client);
+    this.#packages = new Packages(this.#httpClient);
+    this.#clients = new Clients(this.#httpClient);
   }
 
-  #setupClient(params: VisaParams): Client {
-    return new Client({
+  #setupClient(params: VisaParams): HttpClient {
+    return new HttpClient({
       host: "http://localhost:8080",
       company: {
         id: params.company.id,
@@ -29,5 +34,9 @@ export class VisitorAnalytics {
 
   get packages(): Packages {
     return this.#packages;
+  }
+
+  get clients(): Clients {
+    return this.#clients;
   }
 }
