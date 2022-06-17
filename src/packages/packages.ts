@@ -11,6 +11,6 @@ export class Packages {
   }
 
   async getById(packageId: string): Promise<Package | undefined> {
-    return this.client.get<Package | undefined>(`${this.#path}/${this.#path}`);
+    return this.client.get<Package | undefined>(`${this.#path}/${packageId}`);
   }
 }
