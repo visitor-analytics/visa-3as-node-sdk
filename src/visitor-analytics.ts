@@ -1,14 +1,19 @@
 import { HttpClient } from "./http-client";
 import { VisaParams } from "./common";
-import { Packages } from "./packages/packages";
-import { Clients } from "./clients/clients";
-import { Client } from "./clients/types/client.type";
+import { Packages } from "./packages";
+import { Clients } from "./clients";
+import { Websites } from "./websites";
+import { Client } from "./clients";
 
 export class VisitorAnalytics {
   // company data
   #packages: Packages;
   // company clients
   #clients: Clients;
+  // company websites;
+  #websites: Websites;
+  // client
+  #client: Client;
   // http
   #httpClient: HttpClient;
 
@@ -17,6 +22,8 @@ export class VisitorAnalytics {
 
     this.#packages = new Packages(this.#httpClient);
     this.#clients = new Clients(this.#httpClient);
+    this.#client = new Client(this.#httpClient);
+    this.#websites = new Websites(this.#httpClient);
   }
 
   #setupClient(params: VisaParams): HttpClient {
@@ -38,5 +45,13 @@ export class VisitorAnalytics {
 
   get clients(): Clients {
     return this.#clients;
+  }
+
+  client(clientId: string) {
+    return this.#client.setClientId(clientId);
+  }
+
+  get websites(): Websites {
+    return this.#websites;
   }
 }
