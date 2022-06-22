@@ -3,12 +3,16 @@ import { VisaParams } from "./common";
 import { Packages } from "./packages/packages";
 import { Clients } from "./clients/clients";
 import { Client } from "./clients/types/client.type";
+import { Notifications } from "./notifications";
+import { NotificationTypes } from "./notifications/types";
 
 export class VisitorAnalytics {
   // company data
   #packages: Packages;
   // company clients
   #clients: Clients;
+  // notifications
+  #notifications: Notifications;
   // http
   #httpClient: HttpClient;
 
@@ -17,6 +21,7 @@ export class VisitorAnalytics {
 
     this.#packages = new Packages(this.#httpClient);
     this.#clients = new Clients(this.#httpClient);
+    this.#notifications = new Notifications(this.#httpClient);
   }
 
   #setupClient(params: VisaParams): HttpClient {
@@ -38,5 +43,9 @@ export class VisitorAnalytics {
 
   get clients(): Clients {
     return this.#clients;
+  }
+
+  notify(payload: NotificationTypes) {
+    return this.#notifications.notify(payload);
   }
 }
