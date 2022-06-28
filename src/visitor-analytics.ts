@@ -1,19 +1,23 @@
 import { HttpClient } from "./http-client";
 import { VisaParams } from "./common";
-import { Packages } from "./packages";
-import { Clients } from "./clients";
+import { Packages } from "./packages/packages";
+import { Clients } from "./clients/clients";
+import { Notifications } from "./notifications";
+import { NotificationTypes } from "./notifications/types";
 import { Websites } from "./websites";
-import { Client } from "./clients";
+import { ClientApi } from "./clients";
 
 export class VisitorAnalytics {
   // company data
   #packages: Packages;
   // company clients
   #clients: Clients;
+
+  #clientApi: ClientApi;
+  // notifications
+  #notifications: Notifications;
   // company websites;
   #websites: Websites;
-  // client
-  #client: Client;
   // http
   #httpClient: HttpClient;
 
@@ -22,7 +26,9 @@ export class VisitorAnalytics {
 
     this.#packages = new Packages(this.#httpClient);
     this.#clients = new Clients(this.#httpClient);
-    this.#client = new Client(this.#httpClient);
+    this.#clientApi = new ClientApi(this.#httpClient);
+    this.#notifications = new Notifications(this.#httpClient);
+    this.#httpClient = this.#setupClient(params);
     this.#websites = new Websites(this.#httpClient);
   }
 
@@ -47,8 +53,12 @@ export class VisitorAnalytics {
     return this.#clients;
   }
 
+  notify(payload: NotificationTypes) {
+    return this.#notifications.notify(payload);
+  }
+
   client(clientId: string) {
-    return this.#client.setClientId(clientId);
+    return this.#clientApi.setClientId(clientId);
   }
 
   get websites(): Websites {

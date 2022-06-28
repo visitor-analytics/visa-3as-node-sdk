@@ -67,4 +67,33 @@ export class HttpClient {
       this.#logger.logError((error as Error).message);
     }
   }
+
+  async post<T>(path: string): Promise<T | undefined> {
+    this.#logger.logInfo({
+      method: "POST",
+      path: this.#host + path,
+      clientVer: this.#version,
+    });
+
+    if (this.#accessToken.isExpired) {
+      this.#accessToken = this.#accessToken.refresh();
+
+      this.#logger.logInfo("Refreshed access token.");
+      this.#logger.logDebug(this.#accessToken.value);
+    }
+
+    try {
+      const response = await this.#http.post<T>(this.#host + path, {
+        headers: {
+          Authorization: "Bearer " + this.#accessToken.value,
+        },
+      });
+
+      this.#logger.logDebug(response.data as unknown as object);
+
+      return response.data;
+    } catch (error) {
+      this.#logger.logError((error as Error).message);
+    }
+  }
 }
