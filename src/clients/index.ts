@@ -1,2 +1,2 @@
 export { Clients } from "./clients";
-export { Client } from "./client";
+export { ClientApi } from "./client";
