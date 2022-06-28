@@ -3,7 +3,6 @@ import axiosRetry from "axios-retry";
 import { AccessToken, AccessTokenFactory } from "./token-signing";
 import { CompanyDetails } from "./common/types";
 import { Logger, LogLevel } from "./common/logging";
-import { P } from "pino";
 
 axiosRetry(axios, { retries: 3 });
 

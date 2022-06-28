@@ -4,13 +4,15 @@ import { Package } from "./types/package.type";
 export class Packages {
   #path: string = "/v2/3as/packages";
 
-  constructor(private readonly client: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
   async list(): Promise<Package[] | undefined> {
-    return this.client.get<Package[] | undefined>(this.#path);
+    return this.httpClient.get<Package[] | undefined>(this.#path);
   }
 
   async getById(packageId: string): Promise<Package | undefined> {
-    return this.client.get<Package | undefined>(`${this.#path}/${packageId}`);
+    return this.httpClient.get<Package | undefined>(
+      `${this.#path}/${packageId}`
+    );
   }
 }
