@@ -3,6 +3,7 @@ import axiosRetry from "axios-retry";
 import { AccessToken, AccessTokenFactory } from "./token-signing";
 import { CompanyDetails } from "./common/types";
 import { Logger, LogLevel } from "./common/logging";
+import { Response, VisaApiResponse } from "./response";
 
 axiosRetry(axios, { retries: 3 });
 
@@ -39,7 +40,7 @@ export class HttpClient {
     this.#logger.logDebug(this.#accessToken.value);
   }
 
-  async get<T>(path: string): Promise<T | undefined> {
+  async get<T>(path: string): Promise<Response<T | undefined>> {
     this.#logger.logInfo({
       method: "GET",
       path: this.#host + path,
@@ -54,17 +55,50 @@ export class HttpClient {
     }
 
     try {
-      const response = await this.#http.get<T>(this.#host + path, {
-        headers: {
-          Authorization: "Bearer " + this.#accessToken.value,
-        },
-      });
+      const result = await this.#http.get<VisaApiResponse<T>>(
+        this.#host + path,
+        {
+          headers: {
+            Authorization: "Bearer " + this.#accessToken.value,
+          },
+        }
+      );
 
-      this.#logger.logDebug(response.data as unknown as object);
-
-      return response.data;
+      return new Response<T>(result);
     } catch (error) {
       this.#logger.logError((error as Error).message);
+      return new Response<undefined>({} as never);
+    }
+  }
+
+  async post<T>(path: string): Promise<Response<T | undefined>> {
+    this.#logger.logInfo({
+      method: "POST",
+      path: this.#host + path,
+      clientVer: this.#version,
+    });
+
+    if (this.#accessToken.isExpired) {
+      this.#accessToken = this.#accessToken.refresh();
+
+      this.#logger.logInfo("Refreshed access token.");
+      this.#logger.logDebug(this.#accessToken.value);
+    }
+
+    try {
+      const result = await this.#http.post<VisaApiResponse<T>>(
+        this.#host + path,
+        {
+          headers: {
+            Authorization: "Bearer " + this.#accessToken.value,
+          },
+        }
+      );
+
+      return new Response<T>(result);
+    } catch (error) {
+      this.#logger.logError((error as Error).message);
+      return new Response<undefined>({} as never);
     }
   }
 }
