@@ -1,7 +1,7 @@
 import { HttpClient } from "../http-client";
 import { Website } from "./types/website.type";
 
-export class Websites {
+export class WebsitesApi {
   // path1: GET /v2/3as/clients/:id/websites
 
   constructor(private readonly httpClient: HttpClient) {}

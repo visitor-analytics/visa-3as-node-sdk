@@ -5,7 +5,7 @@ import { NotificationTypes } from "./types";
 import { NotificationCreated } from "./types/notification-create.type";
 import { NotificationUpdated } from "./types/notification-update.type";
 
-export class Notifications {
+export class NotificationsApi {
   #path: string = "/v2/3as/notifications";
 
   constructor(private readonly httpClient: HttpClient) {}
