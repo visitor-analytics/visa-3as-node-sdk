@@ -6,6 +6,15 @@ import { Logger, LogLevel } from "./common/logging";
 
 axiosRetry(axios, { retries: 3 });
 
+interface RouteArgs<T> {
+  path: string;
+  payload?: T;
+}
+
+interface RouteFunction<T> {
+  (path: string, payload?: T): Promise<T | undefined>;
+}
+
 export class HttpClient {
   // authentication
   #accessToken: AccessToken;
@@ -39,61 +48,51 @@ export class HttpClient {
     this.#logger.logDebug(this.#accessToken.value);
   }
 
-  async get<T>(path: string): Promise<T | undefined> {
-    this.#logger.logInfo({
-      method: "GET",
-      path: this.#host + path,
-      clientVer: this.#version,
-    });
-
-    if (this.#accessToken.isExpired) {
-      this.#accessToken = this.#accessToken.refresh();
-
-      this.#logger.logInfo("Refreshed access token.");
-      this.#logger.logDebug(this.#accessToken.value);
-    }
-
-    try {
-      const response = await this.#http.get<T>(this.#host + path, {
-        headers: {
-          Authorization: "Bearer " + this.#accessToken.value,
-        },
+  #routeCreate<T>(axiosMethod: "post" | "get" | "patch" | "delete") {
+    return async <T>(path: string, payload?: T): Promise<T | undefined> => {
+      this.#logger.logInfo({
+        method: axiosMethod.toUpperCase(),
+        path: this.#host + path,
+        clientVer: this.#version,
       });
 
-      this.#logger.logDebug(response.data as unknown as object);
+      if (this.#accessToken.isExpired) {
+        this.#accessToken = this.#accessToken.refresh();
 
-      return response.data;
-    } catch (error) {
-      this.#logger.logError((error as Error).message);
-    }
+        this.#logger.logInfo("Refreshed access token.");
+        this.#logger.logDebug(this.#accessToken.value);
+      }
+
+      try {
+        let response;
+        if (payload) {
+          response = await this.#http[axiosMethod]<T>(
+            this.#host + path,
+            payload,
+            {
+              headers: {
+                Authorization: "Bearer " + this.#accessToken.value,
+              },
+            }
+          );
+        } else {
+          response = await this.#http[axiosMethod]<T>(this.#host + path, {
+            headers: {
+              Authorization: "Bearer " + this.#accessToken.value,
+            },
+          });
+        }
+
+        this.#logger.logDebug(response.data as unknown as object);
+        return response.data;
+      } catch (error) {
+        this.#logger.logError((error as Error).message);
+      }
+    };
   }
 
-  async post<T>(path: string): Promise<T | undefined> {
-    this.#logger.logInfo({
-      method: "POST",
-      path: this.#host + path,
-      clientVer: this.#version,
-    });
-
-    if (this.#accessToken.isExpired) {
-      this.#accessToken = this.#accessToken.refresh();
-
-      this.#logger.logInfo("Refreshed access token.");
-      this.#logger.logDebug(this.#accessToken.value);
-    }
-
-    try {
-      const response = await this.#http.post<T>(this.#host + path, {
-        headers: {
-          Authorization: "Bearer " + this.#accessToken.value,
-        },
-      });
-
-      this.#logger.logDebug(response.data as unknown as object);
-
-      return response.data;
-    } catch (error) {
-      this.#logger.logError((error as Error).message);
-    }
-  }
+  post = this.#routeCreate("post");
+  get = this.#routeCreate("get");
+  update = this.#routeCreate("patch");
+  delete = this.#routeCreate("delete");
 }

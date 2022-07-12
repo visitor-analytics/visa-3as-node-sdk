@@ -1,1 +1,1 @@
-export { Websites } from "./websites";
+export { WebsitesApi } from "./websites-api";

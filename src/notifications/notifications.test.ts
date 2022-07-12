@@ -1,12 +1,12 @@
 import { mock, mockClear } from "jest-mock-extended";
-import { Notifications } from ".";
+import { NotificationsApi } from ".";
 import { HttpClient } from "../http-client";
 import { NotificationCreated } from "./types/notification-create.type";
 import { NotificationUpdated } from "./types/notification-update.type";
 
 describe("Notifications", () => {
   describe("Notifications create", () => {
-    let notifications: Notifications;
+    let notifications: NotificationsApi;
     let httpClient: HttpClient;
 
     const website: NotificationCreated["payload"]["website"] = {
@@ -32,7 +32,7 @@ describe("Notifications", () => {
     beforeEach(() => {
       httpClient = mock<HttpClient>();
 
-      notifications = new Notifications(httpClient);
+      notifications = new NotificationsApi(httpClient);
     });
 
     afterEach(() => {
@@ -102,13 +102,13 @@ describe("Notifications", () => {
         id: "456",
       },
     };
-    let notifications: Notifications;
+    let notifications: NotificationsApi;
     let httpClient: HttpClient;
 
     beforeEach(() => {
       httpClient = mock<HttpClient>();
 
-      notifications = new Notifications(httpClient);
+      notifications = new NotificationsApi(httpClient);
     });
 
     afterEach(() => {

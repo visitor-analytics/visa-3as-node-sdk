@@ -1,35 +1,35 @@
 import { HttpClient } from "./http-client";
 import { VisaParams } from "./common";
-import { Packages } from "./packages/packages";
+import { PackagesApi } from "./packages/packages-api";
 import { Clients } from "./clients/clients";
-import { Notifications } from "./notifications";
+import { NotificationsApi } from "./notifications";
 import { NotificationTypes } from "./notifications/types";
-import { Websites } from "./websites";
+import { WebsitesApi } from "./websites";
 import { ClientApi } from "./clients";
 
 export class VisitorAnalytics {
   // company data
-  #packages: Packages;
+  #packagesApi: PackagesApi;
   // company clients
   #clients: Clients;
 
   #clientApi: ClientApi;
   // notifications
-  #notifications: Notifications;
+  #notificationsApi: NotificationsApi;
   // company websites;
-  #websites: Websites;
+  #websitesApi: WebsitesApi;
   // http
   #httpClient: HttpClient;
 
   constructor(private readonly params: VisaParams) {
     this.#httpClient = this.#setupClient(this.params);
 
-    this.#packages = new Packages(this.#httpClient);
+    this.#packagesApi = new PackagesApi(this.#httpClient);
     this.#clients = new Clients(this.#httpClient);
     this.#clientApi = new ClientApi(this.#httpClient);
-    this.#notifications = new Notifications(this.#httpClient);
+    this.#notificationsApi = new NotificationsApi(this.#httpClient);
     this.#httpClient = this.#setupClient(params);
-    this.#websites = new Websites(this.#httpClient);
+    this.#websitesApi = new WebsitesApi(this.#httpClient);
   }
 
   #setupClient(params: VisaParams): HttpClient {
@@ -45,8 +45,8 @@ export class VisitorAnalytics {
     });
   }
 
-  get packages(): Packages {
-    return this.#packages;
+  get packages(): PackagesApi {
+    return this.#packagesApi;
   }
 
   get clients(): Clients {
@@ -54,14 +54,14 @@ export class VisitorAnalytics {
   }
 
   notify(payload: NotificationTypes) {
-    return this.#notifications.notify(payload);
+    return this.#notificationsApi.notify(payload);
   }
 
-  client(clientId: string) {
+  client(clientId: string): ClientApi {
     return this.#clientApi.setClientId(clientId);
   }
 
-  get websites(): Websites {
-    return this.#websites;
+  get websites(): WebsitesApi {
+    return this.#websitesApi;
   }
 }

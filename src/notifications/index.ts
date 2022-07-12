@@ -1,1 +1,1 @@
-export { Notifications } from "./notifications";
+export { NotificationsApi } from "./notifications-api";
