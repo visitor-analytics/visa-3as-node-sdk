@@ -26,4 +26,8 @@ export class PackagesApi {
       payload
     );
   }
+
+  async create(payload: Package): Promise<Response<Package | undefined>> {
+    return this.httpClient.post<Package>(this.#path, payload);
+  }
 }
