@@ -1,4 +1,5 @@
 import { HttpClient } from "../http-client";
+import { Response } from "../response";
 import { Website } from "../websites/types/website.type";
 
 export class ClientApi {
@@ -14,7 +15,7 @@ export class ClientApi {
     return this;
   }
 
-  async listWebsites() {
+  async listWebsites(): Promise<Response<Website[] | undefined>> {
     if (!this.#baseUrl) {
       throw new Error("Missing base url");
     }

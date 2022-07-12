@@ -3,6 +3,7 @@ import axiosRetry from "axios-retry";
 import { AccessToken, AccessTokenFactory } from "./token-signing";
 import { CompanyDetails } from "./common/types";
 import { Logger, LogLevel } from "./common/logging";
+import { Response, VisaApiResponse } from "./response";
 
 axiosRetry(axios, { retries: 3 });
 
@@ -49,7 +50,10 @@ export class HttpClient {
   }
 
   #routeCreate<T>(axiosMethod: "post" | "get" | "patch" | "delete") {
-    return async <T>(path: string, payload?: T): Promise<T | undefined> => {
+    return async <T>(
+      path: string,
+      payload?: T
+    ): Promise<Response<T | undefined>> => {
       this.#logger.logInfo({
         method: axiosMethod.toUpperCase(),
         path: this.#host + path,
@@ -66,7 +70,7 @@ export class HttpClient {
       try {
         let response;
         if (payload) {
-          response = await this.#http[axiosMethod]<T>(
+          response = await this.#http[axiosMethod]<VisaApiResponse<T>>(
             this.#host + path,
             payload,
             {
@@ -76,17 +80,21 @@ export class HttpClient {
             }
           );
         } else {
-          response = await this.#http[axiosMethod]<T>(this.#host + path, {
-            headers: {
-              Authorization: "Bearer " + this.#accessToken.value,
-            },
-          });
+          response = await this.#http[axiosMethod]<VisaApiResponse<T>>(
+            this.#host + path,
+            {
+              headers: {
+                Authorization: "Bearer " + this.#accessToken.value,
+              },
+            }
+          );
         }
 
         this.#logger.logDebug(response.data as unknown as object);
-        return response.data;
+        return new Response<T>(response);
       } catch (error) {
         this.#logger.logError((error as Error).message);
+        return new Response<undefined>({} as never);
       }
     };
   }

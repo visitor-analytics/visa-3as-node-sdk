@@ -1,4 +1,5 @@
 import { HttpClient } from "../http-client";
+import { Response } from "../response";
 import { Package } from "./types/package.type";
 
 export class PackagesApi {
@@ -6,11 +7,11 @@ export class PackagesApi {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  async list(): Promise<Package[] | undefined> {
+  async list(): Promise<Response<Package[] | undefined>> {
     return this.httpClient.get<Package[] | undefined>(this.#path);
   }
 
-  async getById(packageId: string): Promise<Package | undefined> {
+  async getById(packageId: string): Promise<Response<Package | undefined>> {
     return this.httpClient.get<Package | undefined>(
       `${this.#path}/${packageId}`
     );
@@ -19,7 +20,7 @@ export class PackagesApi {
   async updateById(
     packageId: string,
     payload: Package
-  ): Promise<Package | undefined> {
+  ): Promise<Response<Package | undefined>> {
     return this.httpClient.update<Package | undefined>(
       `${this.#path}/${packageId}`,
       payload
