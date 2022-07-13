@@ -7,15 +7,6 @@ import { Response, VisaApiResponse } from "./response";
 
 axiosRetry(axios, { retries: 3 });
 
-interface RouteArgs<T> {
-  path: string;
-  payload?: T;
-}
-
-interface RouteFunction<T> {
-  (path: string, payload?: T): Promise<T | undefined>;
-}
-
 export class HttpClient {
   // authentication
   #accessToken: AccessToken;
@@ -49,7 +40,7 @@ export class HttpClient {
     this.#logger.logDebug(this.#accessToken.value);
   }
 
-  #routeCreate<T>(axiosMethod: "post" | "get" | "patch" | "delete") {
+  #routeCreate(axiosMethod: "post" | "get" | "patch" | "delete") {
     return async <T>(
       path: string,
       payload?: T
@@ -69,7 +60,7 @@ export class HttpClient {
 
       try {
         let response;
-        if (payload) {
+        if (payload && axiosMethod !== "get" && axiosMethod !== "delete") {
           response = await this.#http[axiosMethod]<VisaApiResponse<T>>(
             this.#host + path,
             payload,
