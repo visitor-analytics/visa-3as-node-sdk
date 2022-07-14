@@ -1,7 +1,7 @@
 import { HttpClient } from "./http-client";
 import { VisaParams } from "./common";
 import { PackagesApi } from "./packages/packages-api";
-import { Clients } from "./clients/clients";
+import { ClientsApi } from "./clients/clients-api";
 import { NotificationsApi } from "./notifications";
 import { NotificationTypes } from "./notifications/types";
 import { WebsitesApi } from "./websites";
@@ -11,7 +11,7 @@ export class VisitorAnalytics {
   // company data
   #packagesApi: PackagesApi;
   // company clients
-  #clients: Clients;
+  #clients: ClientsApi;
 
   #clientApi: ClientApi;
   // notifications
@@ -25,7 +25,7 @@ export class VisitorAnalytics {
     this.#httpClient = this.#setupClient(this.params);
 
     this.#packagesApi = new PackagesApi(this.#httpClient);
-    this.#clients = new Clients(this.#httpClient);
+    this.#clients = new ClientsApi(this.#httpClient);
     this.#clientApi = new ClientApi(this.#httpClient);
     this.#notificationsApi = new NotificationsApi(this.#httpClient);
     this.#httpClient = this.#setupClient(params);
@@ -49,7 +49,7 @@ export class VisitorAnalytics {
     return this.#packagesApi;
   }
 
-  get clients(): Clients {
+  get clients(): ClientsApi {
     return this.#clients;
   }
 

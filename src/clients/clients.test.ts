@@ -1,6 +1,6 @@
 import { mock, mockClear } from "jest-mock-extended";
 import { HttpClient } from "../http-client";
-import { Clients } from ".";
+import { ClientsApi } from ".";
 import { ClientApi } from ".";
 
 describe("Client(s)", () => {
@@ -16,10 +16,10 @@ describe("Client(s)", () => {
   });
 
   describe("Clients", () => {
-    let clients: Clients;
+    let clients: ClientsApi;
 
     beforeEach(() => {
-      clients = new Clients(httpClient);
+      clients = new ClientsApi(httpClient);
     });
 
     it("should call http client get when list() is called", () => {
