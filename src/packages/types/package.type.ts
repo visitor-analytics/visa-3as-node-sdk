@@ -1,6 +1,6 @@
 export type Package = {
   id: string;
   touchpoints: string;
-  companyId: string;
+  customerId: string;
   createdAt: string;
 };

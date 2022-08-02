@@ -1,5 +1,7 @@
+import { Notifications } from "../enums/notifications.enum";
+
 export type NotificationUpdated = {
-  type: "SUBSCRIPTION_UPDATED";
+  type: Notifications.SUBSCRIPTION_UPDATED;
   payload: {
     packageId: string;
     website: {
