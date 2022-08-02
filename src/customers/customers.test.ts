@@ -1,10 +1,10 @@
 import { mock, mockClear } from "jest-mock-extended";
 import { HttpClient } from "../http-client";
-import { ClientsApi } from ".";
-import { ClientApi } from ".";
+import { CustomersApi } from ".";
+import { CustomerApi } from ".";
 
-describe("Client(s)", () => {
-  const clientId = "ae14772b-4df0-4fe9-89e1-c7f8bb2378da";
+describe("Customer(s)", () => {
+  const customerExternalId = "ae14772b-4df0-4fe9-89e1-c7f8bb2378da";
   let httpClient: HttpClient;
 
   beforeEach(() => {
@@ -15,38 +15,38 @@ describe("Client(s)", () => {
     mockClear(httpClient);
   });
 
-  describe("Clients", () => {
-    let clients: ClientsApi;
+  describe("Customers-API", () => {
+    let customersApi: CustomersApi;
 
     beforeEach(() => {
-      clients = new ClientsApi(httpClient);
+      customersApi = new CustomersApi(httpClient);
     });
 
     it("should call http client get when list() is called", () => {
-      clients.list();
+      customersApi.list();
       expect(httpClient.get).toHaveBeenCalled();
     });
 
     it("should call http client get when getById() is called", () => {
-      clients.getById(clientId);
+      customersApi.getById(customerExternalId);
       expect(httpClient.get).toHaveBeenCalled();
     });
   });
 
-  describe("Client-API", () => {
-    let clientApi: ClientApi;
+  describe("Customer-API", () => {
+    let customerApi: CustomerApi;
 
     beforeEach(() => {
-      clientApi = new ClientApi(httpClient);
+      customerApi = new CustomerApi(httpClient);
     });
 
     it("should call axios get when listWebsites() is called", () => {
-      clientApi.setClientId(clientId).listWebsites();
+      customerApi.setCustomerId(customerExternalId).listWebsites();
       expect(httpClient.get).toHaveBeenCalled();
     });
 
-    it("should throw an error if listWebsites() is called without setClientId()", async () => {
-      await expect(clientApi.listWebsites()).rejects.toThrow();
+    it("should throw an error if listWebsites() is called without setCustomerId()", async () => {
+      await expect(customerApi.listWebsites()).rejects.toThrow();
     });
   });
 });

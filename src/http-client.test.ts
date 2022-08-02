@@ -12,7 +12,7 @@ jest.mock("./token-signing/access-token.ts");
 
 describe("http-client", () => {
   let visitorAnalytics: VisitorAnalytics;
-  const companyId = "2";
+  const partnerId = "2";
   const domain = "domain";
   const environment = "test";
   const logLevel = LogLevel.DEBUG;
@@ -47,7 +47,7 @@ describe("http-client", () => {
 
   beforeAll(() => {
     // visitorAnalytics = new VisitorAnalytics({
-    //   company: { id: companyId, domain, privateKey },
+    //   partner: { id: partnerId, domain, privateKey },
     //   environment,
     //   logLevel,
     // });

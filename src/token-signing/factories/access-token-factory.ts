@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { CompanyDetails } from "../../common";
+import { PartnerDetails } from "../../common";
 import { AccessToken } from "../access-token";
 import { RS256TokenSigner } from "../rs256-signer";
 import { TokenHeader, TokenPayload } from "../types";
@@ -7,13 +7,13 @@ import { TokenHeader, TokenPayload } from "../types";
 export class AccessTokenFactory {
   getAccessToken(
     alg: "RS256",
-    company: CompanyDetails,
+    partner: PartnerDetails,
     clientVersion: string
   ): AccessToken {
-    const header: TokenHeader = { kid: company.id };
+    const header: TokenHeader = { kid: partner.id };
     const payload: TokenPayload = {
-      sub: company.domain,
-      roles: ["sdk"],
+      sub: partner.domain,
+      roles: ["intp"],
       exp: dayjs().add(10, "minutes").unix(),
       iat: dayjs().unix(),
       ver: clientVersion,
@@ -22,7 +22,7 @@ export class AccessTokenFactory {
     return new AccessToken({
       header,
       payload,
-      signer: new RS256TokenSigner(company.privateKey),
+      signer: new RS256TokenSigner(partner.privateKey),
     });
   }
 }
