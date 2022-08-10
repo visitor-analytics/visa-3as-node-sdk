@@ -2,15 +2,15 @@ import { HttpClient } from "../http-client";
 import { Response } from "../response";
 import { Website } from "../websites/types/website.type";
 
-export class ClientApi {
+export class CustomerApi {
   #baseUrl: string = "";
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  setClientId(clientExternalId: string): ClientApi {
-    if (!clientExternalId) throw new Error("Missing client id");
+  setCustomerId(customerId: string): CustomerApi {
+    if (!customerId) throw new Error("Missing customer id");
 
-    this.#baseUrl = "/v2/3as/clients/" + clientExternalId;
+    this.#baseUrl = "/v2/3as/customers/" + customerId;
 
     return this;
   }
@@ -36,7 +36,7 @@ export class ClientApi {
 
   private checkIfBaseUrl() {
     if (!this.#baseUrl) {
-      throw new Error("Missing base url, use setClientId() before");
+      throw new Error("Missing base url, use setCustomerId() before");
     }
   }
 }

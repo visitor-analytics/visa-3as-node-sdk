@@ -1,5 +1,7 @@
+import { Notifications } from "../enums/notifications.enum";
+
 export type NotificationCreated = {
-  type: "SUBSCRIPTION_CREATED";
+  type: Notifications.SUBSCRIPTION_CREATED;
   payload: {
     packageId: string;
     website: {
@@ -8,7 +10,7 @@ export type NotificationCreated = {
       language?: "en";
       timezone?: string;
     };
-    client: {
+    customer: {
       id: string;
       email: string;
     };

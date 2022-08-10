@@ -6,13 +6,13 @@ Provides easy access to VISA`s 3AS API.
   - [**Installation**](#installation)
   - [**Getting started**](#getting-started)
   - [**Promises**](#promises)
-  - [**Clients**](#clients)
-    - [List all available clients](#list-all-available-clients)
+  - [**Customers**](#customers)
+    - [List all available customers](#list-all-available-customers)
       - [Request](#request)
       - [Response](#response)
         - [Definition](#definition)
         - [Example](#example)
-    - [Get a single client by ID](#get-a-single-client-by-id)
+    - [Get a single Customer by ID](#get-a-single-customer-by-id)
       - [Request](#request-1)
       - [Response](#response-1)
         - [Definition](#definition-1)
@@ -58,9 +58,9 @@ npm install visa-3as --save
 var VisitorAnalytics = require("visa-3as");
 
 const visa = new VisitorAnalytics({
-  company: {
+  partner: {
     id: "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
-    domain: "http://3as-company-domain.io",
+    domain: "http://3as-partner-domain.io",
     privateKey: `...`,
   },
   environment: "test",
@@ -78,16 +78,16 @@ Every API call returns a promise.
 
 <br>
 
-## **Clients**
+## **Customers**
 
-3AS Companies are able to get data about their clients.
+3AS Partners are able to get data about their customers.
 
-### List all available clients
+### List all available customers
 
 #### Request
 
 ```js
-const clients = await visa.clients.list();
+const customers = await visa.customers.list();
 ```
 
 #### Response
@@ -100,7 +100,7 @@ const clients = await visa.clients.list();
     {
       "id": uuid,
       "externalId": uuid,
-      "companyId": uuid,
+      "partnerId": uuid,
       "createdAt": Date
     }
   ],
@@ -121,7 +121,7 @@ const clients = await visa.clients.list();
     {
       "id": "7128840a-5347-49a4-8dfa-9022d8dad21a",
       "externalId": "7128840a-5347-49a4-8dfa-9022d8dad21a",
-      "companyId": "7128840a-5347-49a4-8dfa-9022d8dad21a",
+      "partnerId": "7128840a-5347-49a4-8dfa-9022d8dad21a",
       "createdAt": "2019-12-01"
     }
   ],
@@ -134,14 +134,14 @@ const clients = await visa.clients.list();
 }
 ```
 
-### Get a single client by ID
+### Get a single Customer by ID
 
 #### Request
 
 ```js
-const clientId = "8e683b6a-9643-466b-ae63-bbffa7be18a1";
+const customerId = "8e683b6a-9643-466b-ae63-bbffa7be18a1";
 
-const client = await visa.clients.getById(clientId);
+const customer = await visa.customers.getById(customerId);
 ```
 
 #### Response
@@ -153,7 +153,7 @@ const client = await visa.clients.getById(clientId);
   "payload": {
     "id": uuid,
     "externalId": uuid,
-    "companyId": uuid,
+    "partnerId": uuid,
     "createdAt": Date
   }
 }
@@ -166,7 +166,7 @@ const client = await visa.clients.getById(clientId);
   "payload": {
     "id": "8e683b6a-9643-466b-ae63-bbffa7be18a1",
     "externalId": "7128840a-5347-49a4-8dfa-9022d8dad21a",
-    "companyId": "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
+    "partnerId": "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
     "createdAt": "2019-12-01"
   }
 }
@@ -176,7 +176,7 @@ const client = await visa.clients.getById(clientId);
 
 ## **Packages**
 
-3AS Companies are able to get data about their clients packages
+3AS Partners are able to get data about their customers packages
 
 ### List all available packages
 
@@ -197,7 +197,7 @@ const packages = await visa.packages.get();
       "id": uuid,
       "name": string,
       "touchPoints": number,
-      "companyId": uuid,
+      "partnerId": uuid,
       "createdAt": Date
     }
   ]
@@ -213,7 +213,7 @@ const packages = await visa.packages.get();
       "id": "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
       "name": "Package Name",
       "touchPoints": 10000,
-      "companyId": "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
+      "partnerId": "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
       "createdAt": "2019-12-01"
     }
   ]
@@ -238,7 +238,7 @@ const package = await visa.packages.get(packageId);
     "id": uuid,
     "name": string,
     "touchPoints": number,
-    "companyId": uuid,
+    "partnerId": uuid,
     "createdAt": Date
   }
 }
@@ -252,7 +252,7 @@ const package = await visa.packages.get(packageId);
     "id": "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
     "name": "Package Name",
     "touchPoints": 10000,
-    "companyId": "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
+    "partnerId": "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
     "createdAt": "2019-12-01"
   }
 
@@ -263,16 +263,16 @@ const package = await visa.packages.get(packageId);
 
 ## **Websites**
 
-3AS Companies are able to get data about their clients websites.
+3AS Partners are able to get data about their customers websites.
 
 ### Get all websites
 
 #### Request
 
 ```js
-const clientId = "8e683b6a-9643-466b-ae63-bbffa7be18a1";
+const customerId = "8e683b6a-9643-466b-ae63-bbffa7be18a1";
 
-const websites = await visa.client(clientId).listWebsites();
+const websites = await visa.customer(customerId).listWebsites();
 ```
 
 #### Response
@@ -285,7 +285,7 @@ const websites = await visa.client(clientId).listWebsites();
     {
       "id": uuid,
       "domain": uri,
-      "clientId": uuid,
+      "customerId": uuid,
       "packageId": uuid,
       "createdAt": Date
     }
@@ -301,7 +301,7 @@ const websites = await visa.client(clientId).listWebsites();
     {
       "id": "73f8817d-dc16-43af-9da1-b4166c6d0613",
       "domain": "bigstuff.visitoranalytics.io",
-      "clientId": "8e683b6a-9643-466b-ae63-bbffa7be18a1",
+      "customerId": "8e683b6a-9643-466b-ae63-bbffa7be18a1",
       "packageId": "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
       "createdAt": "2019-12-01"
     }
@@ -328,7 +328,7 @@ const website = await visa.websites.getById(websiteId);
   "payload": {
     "id": uuid,
     "domain": uri,
-    "clientId": uuid,
+    "customerId": uuid,
     "packageId": uuid,
     "createdAt": Date
   }
@@ -342,7 +342,7 @@ const website = await visa.websites.getById(websiteId);
   "payload": {
     "id": "73f8817d-dc16-43af-9da1-b4166c6d0613",
     "domain": "bigstuff.visitoranalytics.io",
-    "clientId": "8e683b6a-9643-466b-ae63-bbffa7be18a1",
+    "customerId": "8e683b6a-9643-466b-ae63-bbffa7be18a1",
     "packageId": "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
     "createdAt": "2019-12-01"
   }
@@ -353,7 +353,7 @@ const website = await visa.websites.getById(websiteId);
 
 ## **Subscription Notifications**
 
-3AS Companies must be able to send notifications through the SDK regarding the billing & subscription events
+3AS Partners must be able to send notifications through the SDK regarding the billing & subscription events
 
 ### Subscription created Notification
 

@@ -7,11 +7,11 @@ describe("Packages", () => {
   let packages: PackagesApi;
   let httpClient: HttpClient;
   const packageId = "11eec738-15e1-42af-8fc8-ddf814af5001";
-  const companyId = "f5587488-f1e4-41fa-b5ce-660c2b5f7b0f";
+  const customerId = "f5587488-f1e4-41fa-b5ce-660c2b5f7b0f";
   const packagePayload: Package = {
     id: packageId,
     touchpoints: "2",
-    companyId,
+    customerId,
     createdAt: new Date().toDateString(),
   };
 

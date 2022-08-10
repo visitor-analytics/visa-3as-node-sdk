@@ -10,7 +10,7 @@ export const notificationCreateSchema = Joi.object({
       language: Joi.string().valid("en").optional(),
       timezone: Joi.string().optional(), //TODO add timezone validation
     },
-    client: {
+    customer: {
       id: Joi.string().required(),
       email: Joi.string().email().required(),
     },
