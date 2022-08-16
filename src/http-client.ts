@@ -4,12 +4,16 @@ import { AccessToken, AccessTokenFactory } from "./token-signing";
 import { Logger, LogLevel } from "./common/logging";
 import { Response, VisaApiResponse } from "./response";
 import { PartnerDetails } from "./common/types";
+import { IFrameUtils } from "./common/iframe";
 
 axiosRetry(axios, { retries: 3 });
 
 export class HttpClient {
   // authentication
   #accessToken: AccessToken;
+  // IFrame
+  #iFrame: IFrameUtils;
+
   // logging
   #logger: Logger;
 
@@ -35,6 +39,8 @@ export class HttpClient {
       params.partner,
       this.#version
     );
+
+    this.#iFrame = new IFrameUtils(this.#accessToken, params.environment);
 
     this.#logger.logInfo("Generated access token.");
     this.#logger.logDebug(this.#accessToken.value);
