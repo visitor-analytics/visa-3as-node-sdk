@@ -1,9 +1,9 @@
 import axios, { Axios } from "axios";
 import axiosRetry from "axios-retry";
 import { AccessToken, AccessTokenFactory } from "./token-signing";
-import { CompanyDetails } from "./common/types";
 import { Logger, LogLevel } from "./common/logging";
 import { Response, VisaApiResponse } from "./response";
+import { PartnerDetails } from "./common/types";
 
 axiosRetry(axios, { retries: 3 });
 
@@ -19,7 +19,7 @@ export class HttpClient {
 
   constructor(params: {
     readonly host: string;
-    readonly company: CompanyDetails;
+    readonly partner: PartnerDetails;
     readonly logLevel: LogLevel;
     readonly environment: "production" | "test";
   }) {
@@ -32,7 +32,7 @@ export class HttpClient {
 
     this.#accessToken = new AccessTokenFactory().getAccessToken(
       "RS256",
-      params.company,
+      params.partner,
       this.#version
     );
 

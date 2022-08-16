@@ -1,6 +1,7 @@
 import { mock, mockClear } from "jest-mock-extended";
 import { NotificationsApi } from ".";
 import { HttpClient } from "../http-client";
+import { Notifications } from "./enums/notifications.enum";
 import { NotificationCreated } from "./types/notification-create.type";
 import { NotificationUpdated } from "./types/notification-update.type";
 
@@ -14,18 +15,18 @@ describe("Notifications", () => {
       domain: "oo://example.com:8042/over/there?name=ferret#nose",
       language: "en",
     };
-    const client: NotificationCreated["payload"]["client"] = {
+    const customer: NotificationCreated["payload"]["customer"] = {
       id: "123",
       email: "denis@gmail.com",
     };
     const payload: NotificationCreated["payload"] = {
       packageId: "8e0ed0e5-c307-412b-9f7e-739d95c9b9f5",
       website,
-      client,
+      customer,
     };
 
     const goodNotificationsCreateObject: NotificationCreated = {
-      type: "SUBSCRIPTION_CREATED",
+      type: Notifications.SUBSCRIPTION_CREATED,
       payload,
     };
 
@@ -76,26 +77,27 @@ describe("Notifications", () => {
       );
     });
 
-    it("should throw an error when invalid user email is provided", async () => {
+    it("should throw an error when invalid customer email is provided", async () => {
       const notify = notifications.notify({
         ...goodNotificationsCreateObject,
         payload: {
           ...payload,
-          client: {
-            ...client,
+          customer: {
+            ...customer,
             email: "notAnEmail",
           },
         },
       });
 
       await expect(notify).rejects.toThrowError(
-        '"payload.client.email" must be a valid email'
+        '"payload.customer.email" must be a valid email'
       );
     });
   });
 
   describe("Notifications update", () => {
-    const type: NotificationUpdated["type"] = "SUBSCRIPTION_UPDATED";
+    const type: NotificationUpdated["type"] =
+      Notifications.SUBSCRIPTION_UPDATED;
     const payload: NotificationUpdated["payload"] = {
       packageId: "8e0ed0e5-c307-412b-9f7e-739d95c9b9f5",
       website: {

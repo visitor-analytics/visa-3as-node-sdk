@@ -1,7 +1,7 @@
 import { LogLevel } from "../logging";
 
 export type VisaParams = {
-  company: {
+  partner: {
     id: string;
     domain: string;
     privateKey: string;
