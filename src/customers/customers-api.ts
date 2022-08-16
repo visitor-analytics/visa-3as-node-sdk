@@ -1,5 +1,6 @@
+import { PaginatedResponse } from "../common";
 import { HttpClient } from "../http-client";
-import { Response } from "../response";
+import { CreateCustomer } from "./types/create-customer.type";
 import { Customer } from "./types/customer.type";
 
 export class CustomersApi {
@@ -7,25 +8,32 @@ export class CustomersApi {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  async create(customer: Customer): Promise<Response<Customer | undefined>> {
-    return this.httpClient.post<Customer | undefined>(this.#path, customer);
+  async create(createCustomer: CreateCustomer): Promise<Customer> {
+    return (
+      await this.httpClient.post<Customer>(this.#path, createCustomer)
+    ).getPayload();
   }
 
-  async list(): Promise<Response<Customer[] | undefined>> {
-    return this.httpClient.get<Customer[] | undefined>(this.#path);
-  }
-
-  async getById(
-    customerExternalId: string
-  ): Promise<Response<Customer | undefined>> {
-    return this.httpClient.get<Customer | undefined>(
-      `${this.#path}/${customerExternalId}`
+  async list(
+    pagination: {
+      page: number;
+      pageSize: number;
+    } = { page: 0, pageSize: 10 }
+  ): Promise<PaginatedResponse<Customer>> {
+    const response = await this.httpClient.get<Customer[]>(
+      this.#path +
+        "?page=" +
+        pagination.page +
+        "&pageSize=" +
+        pagination.pageSize
     );
+
+    return { items: response.getPayload(), metadata: response.getMetadata() };
   }
 
-  async deleteById(
-    customerExternalId: string
-  ): Promise<Response<Customer | undefined>> {
-    return this.httpClient.delete(`${this.#path}/${customerExternalId}`);
+  async getByExternalId(customerExternalId: string): Promise<Customer> {
+    return (
+      await this.httpClient.get<Customer>(this.#path + "/" + customerExternalId)
+    ).getPayload();
   }
 }

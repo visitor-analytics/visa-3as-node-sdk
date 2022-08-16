@@ -1,42 +1,54 @@
+import { PaginatedResponse } from "../common";
+import { IFrameUtils } from "../common/iframe";
 import { HttpClient } from "../http-client";
-import { Response } from "../response";
 import { Website } from "../websites/types/website.type";
 
 export class CustomerApi {
-  #baseUrl: string = "";
+  #customerId: string = "";
 
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(
+    private readonly httpClient: HttpClient,
+    private readonly iframe: IFrameUtils
+  ) {}
 
   setCustomerId(customerId: string): CustomerApi {
     if (!customerId) throw new Error("Missing customer id");
 
-    this.#baseUrl = "/v2/3as/customers/" + customerId;
+    this.#customerId = customerId;
 
     return this;
   }
 
-  async listWebsites(): Promise<Response<Website[] | undefined>> {
-    this.checkIfBaseUrl();
-
-    return this.httpClient.get<Website[] | undefined>(
-      this.#baseUrl + "/websites"
+  async listWebsites(
+    pagination: {
+      page: number;
+      pageSize: number;
+    } = { page: 0, pageSize: 10 }
+  ): Promise<PaginatedResponse<Website>> {
+    const response = await this.httpClient.get<Website[]>(
+      "/v2/3as/websites?externalCustomerId=" +
+        this.#customerId +
+        "&page=" +
+        pagination.page +
+        "&pageSize=" +
+        pagination.pageSize
     );
+
+    return {
+      items: response.getPayload(),
+      metadata: response.getMetadata(),
+    };
   }
 
-  async createWebsite(
-    website: Website
-  ): Promise<Response<Website | undefined>> {
-    this.checkIfBaseUrl();
-
-    return this.httpClient.post<Website | undefined>(
-      `${this.#baseUrl}/websites`,
-      website
+  async delete(): Promise<Website> {
+    const response = await this.httpClient.delete<Website>(
+      "/v2/3as/customers/" + this.#customerId
     );
+
+    return response.getPayload();
   }
 
-  private checkIfBaseUrl() {
-    if (!this.#baseUrl) {
-      throw new Error("Missing base url, use setCustomerId() before");
-    }
+  generateIFrameDashboardUrl(): string {
+    return this.iframe.generateDashboardUrl(this.#customerId);
   }
 }
