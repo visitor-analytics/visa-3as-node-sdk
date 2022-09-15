@@ -1,70 +1,92 @@
 import axios, { Axios } from "axios";
 import axiosRetry from "axios-retry";
-import { AccessToken, AccessTokenFactory } from "./token-signing";
-import { CompanyDetails } from "./common/types";
 import { Logger, LogLevel } from "./common/logging";
+import { Response, VisaApiResponse } from "./response";
+import { AccessToken } from "./token-signing";
 
 axiosRetry(axios, { retries: 3 });
 
 export class HttpClient {
-  // authentication
-  #accessToken: AccessToken;
-  // logging
-  #logger: Logger;
+  DEV_API_GATEWAY_URI = "http://localhost:9090";
+  PROD_API_GATEWAY_URI = "";
 
   #host: string;
+  #accessToken: AccessToken;
+
   #http: Axios;
-  #version: string = "rc";
+  #logger: Logger;
 
   constructor(params: {
-    readonly host: string;
-    readonly company: CompanyDetails;
+    readonly accessToken: AccessToken;
     readonly logLevel: LogLevel;
-    readonly environment: "production" | "test";
+    readonly env: "production" | "dev";
   }) {
     this.#http = axios;
-    this.#host = params.host;
+
+    this.#host =
+      params.env === "dev"
+        ? this.DEV_API_GATEWAY_URI
+        : this.PROD_API_GATEWAY_URI;
+    this.#accessToken = params.accessToken;
+
     this.#logger = new Logger({
-      env: params.environment,
+      env: params.env,
       level: params.logLevel,
     });
 
-    this.#accessToken = new AccessTokenFactory().getAccessToken(
-      "RS256",
-      params.company,
-      this.#version
-    );
-
-    this.#logger.logInfo("Generated access token.");
-    this.#logger.logDebug(this.#accessToken.value);
+    this.#logger.logDebug(this.#accessToken);
   }
 
-  async get<T>(path: string): Promise<T | undefined> {
-    this.#logger.logInfo({
-      method: "GET",
-      path: this.#host + path,
-      clientVer: this.#version,
-    });
-
-    if (this.#accessToken.isExpired) {
-      this.#accessToken = this.#accessToken.refresh();
-
-      this.#logger.logInfo("Refreshed access token.");
-      this.#logger.logDebug(this.#accessToken.value);
-    }
-
-    try {
-      const response = await this.#http.get<T>(this.#host + path, {
-        headers: {
-          Authorization: "Bearer " + this.#accessToken.value,
-        },
+  #routeCreate(axiosMethod: "post" | "get" | "patch" | "delete") {
+    return async <T>(path: string, payload?: unknown): Promise<Response<T>> => {
+      this.#logger.logInfo({
+        method: axiosMethod.toUpperCase(),
+        path: this.#host + path,
       });
 
-      this.#logger.logDebug(response.data as unknown as object);
+      if (this.#accessToken.isExpired) {
+        this.#accessToken = this.#accessToken.refresh();
 
-      return response.data;
-    } catch (error) {
-      this.#logger.logError((error as Error).message);
-    }
+        this.#logger.logInfo("Refreshed access token.");
+        this.#logger.logDebug(this.#accessToken.value);
+      }
+
+      try {
+        let response;
+        if (payload && axiosMethod !== "get" && axiosMethod !== "delete") {
+          response = await this.#http[axiosMethod]<VisaApiResponse<T>>(
+            this.#host + path,
+            payload,
+            {
+              headers: {
+                Authorization: "Bearer " + this.#accessToken.value,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+        } else {
+          response = await this.#http[axiosMethod]<VisaApiResponse<T>>(
+            this.#host + path,
+            {
+              headers: {
+                Authorization: "Bearer " + this.#accessToken.value,
+                Accept: "application/json",
+              },
+            }
+          );
+        }
+
+        this.#logger.logDebug(response.data as unknown as object);
+        return new Response<T>(response);
+      } catch (error) {
+        this.#logger.logError((error as Error).message);
+        throw new Error((error as Error).message);
+      }
+    };
   }
+
+  post = this.#routeCreate("post");
+  get = this.#routeCreate("get");
+  update = this.#routeCreate("patch");
+  delete = this.#routeCreate("delete");
 }

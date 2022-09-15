@@ -1,3 +1,3 @@
 export type Content = {
-  [key: string]: string | number | string[];
+  [key: string]: string | number | string[] | undefined | null;
 };

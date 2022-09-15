@@ -1,10 +1,8 @@
 import { Currency } from "./currency.enum";
 
-export type Package = {
-  id: string;
+export type CreatePackage = {
   name: string;
+  touchpoints: number;
   price: number;
   currency: Currency;
-  touchpoints: number;
-  createdAt: string;
 };

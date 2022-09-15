@@ -1,28 +1,37 @@
 import dayjs from "dayjs";
-import { CompanyDetails } from "../../common";
 import { AccessToken } from "../access-token";
 import { RS256TokenSigner } from "../rs256-signer";
 import { TokenHeader, TokenPayload } from "../types";
 
 export class AccessTokenFactory {
-  getAccessToken(
-    alg: "RS256",
-    company: CompanyDetails,
-    clientVersion: string
-  ): AccessToken {
-    const header: TokenHeader = { kid: company.id };
+  public ROLE_INTP = "intp";
+  public ROLE_INTPC = "intpc";
+
+  static getAccessToken(config: AccessTokenConfig): AccessToken {
+    const header: TokenHeader = { kid: config.kid, alg: config.alg };
     const payload: TokenPayload = {
-      sub: company.domain,
-      roles: ["sdk"],
+      roles: [config.claims.role],
+      intp: config.claims.intp,
+      intpc: config.claims.intpc,
       exp: dayjs().add(10, "minutes").unix(),
       iat: dayjs().unix(),
-      ver: clientVersion,
     };
 
     return new AccessToken({
       header,
       payload,
-      signer: new RS256TokenSigner(company.privateKey),
+      signer: new RS256TokenSigner(config.privateKey),
     });
   }
 }
+
+export type AccessTokenConfig = {
+  kid: string;
+  alg: string;
+  privateKey: string;
+  claims: {
+    role: "intp" | "intpc";
+    intp: string;
+    intpc?: string;
+  };
+};

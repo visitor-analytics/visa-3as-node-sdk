@@ -8,7 +8,7 @@ export class Logger {
   #level: LogLevel;
 
   constructor(options: LoggerOptions) {
-    this.#pino = options.env === "test" ? pinoPretty : pino();
+    this.#pino = options.env === "dev" ? pinoPretty : pino();
     this.#level = options.level;
   }
 
