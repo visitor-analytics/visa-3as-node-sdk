@@ -57,41 +57,41 @@ describe("http-client", () => {
     jest.resetAllMocks();
   });
 
-  it.skip("refresh the token when it is expired", async () => {
-    // jest
-    //   .spyOn(AccessToken.prototype, "isExpired", "get")
-    //   .mockImplementation(() => {
-    //     return true;
-    //   });
-    const accessToken = new AccessTokenFactory().getAccessToken(
-      "RS256",
-      {
-        id: "2",
-        domain: "domain",
-        privateKey,
-      },
-      "rc"
-    );
-    expect(AccessToken).toHaveBeenCalled();
-    console.log(
-      "🚀 ~ file: http-client.test.ts ~ line 75 ~ accessToken",
-      accessToken
-    );
+  // it.skip("refresh the token when it is expired", async () => {
+  //   // jest
+  //   //   .spyOn(AccessToken.prototype, "isExpired", "get")
+  //   //   .mockImplementation(() => {
+  //   //     return true;
+  //   //   });
+  //   const accessToken = new AccessTokenFactory().getAccessToken(
+  //     "RS256",
+  //     {
+  //       id: "2",
+  //       domain: "domain",
+  //       privateKey,
+  //     },
+  //     "rc"
+  //   );
+  //   expect(AccessToken).toHaveBeenCalled();
+  //   console.log(
+  //     "🚀 ~ file: http-client.test.ts ~ line 75 ~ accessToken",
+  //     accessToken
+  //   );
 
-    // console.log(
-    //   "🚀 ~ file: http-client.test.ts ~ line 75 ~ accessToken",
-    //   accessToken
-    // );
-    // // const accessToken = new AccessToken({
-    // //   header: {
-    // //     kid: "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
-    // //   },
-    // //   payload: {
-    // //     iat: dayjs().unix(),
-    // //     exp: dayjs().add(10, "minutes").unix(),
-    // //   },
-    // //   signer: new RS256TokenSigner(privateKey),
-    // // });
-    // expect(accessToken.isExpired).toEqual(true);
-  });
+  //   // console.log(
+  //   //   "🚀 ~ file: http-client.test.ts ~ line 75 ~ accessToken",
+  //   //   accessToken
+  //   // );
+  //   // // const accessToken = new AccessToken({
+  //   // //   header: {
+  //   // //     kid: "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
+  //   // //   },
+  //   // //   payload: {
+  //   // //     iat: dayjs().unix(),
+  //   // //     exp: dayjs().add(10, "minutes").unix(),
+  //   // //   },
+  //   // //   signer: new RS256TokenSigner(privateKey),
+  //   // // });
+  //   // expect(accessToken.isExpired).toEqual(true);
+  // });
 });

@@ -2,16 +2,18 @@ import { mock, mockClear } from "jest-mock-extended";
 import { PackagesApi } from "./packages-api";
 import { HttpClient } from "../http-client";
 import { Package } from "./types/package.type";
+import { Currency } from "./types/currency.enum";
 
 describe("Packages", () => {
   let packages: PackagesApi;
   let httpClient: HttpClient;
   const packageId = "11eec738-15e1-42af-8fc8-ddf814af5001";
-  const customerId = "f5587488-f1e4-41fa-b5ce-660c2b5f7b0f";
   const packagePayload: Package = {
     id: packageId,
-    touchpoints: "2",
-    customerId,
+    name: "free",
+    price: 0.0,
+    currency: Currency.EUR,
+    touchpoints: 2,
     createdAt: new Date().toDateString(),
   };
 
@@ -36,13 +38,6 @@ describe("Packages", () => {
     it("should call axios get when getById() is called", async () => {
       packages.getById(packageId);
       expect(httpClient.get).toHaveBeenCalled();
-    });
-  });
-
-  describe("Update package by ID", () => {
-    it("should call axios patch when updateById is called", () => {
-      packages.updateById(packageId, packagePayload);
-      expect(httpClient.update).toHaveBeenCalled();
     });
   });
 });
