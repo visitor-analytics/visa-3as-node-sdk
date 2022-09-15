@@ -1,24 +1,27 @@
-import { AccessToken } from "../../token-signing";
+import { AuthUtils } from "../auth/auth";
 
 export class IFrameUtils {
-  //check env?
-  DEV_DASHBOARD_BASE_URI = "";
-  PROD_DASHBOARD_BASE_URI = "";
+  DEV_DASHBOARD_BASE_URL = "https://dev-dashboard.va-endpoint.com";
+  PROD_DASHBOARD_BASE_URL = "";
 
-  //check env: "dev"? In http-client.ts there was only test and production
   constructor(
-    private readonly accessToken: AccessToken,
-    private readonly env: "test" | "production"
+    private readonly auth: AuthUtils,
+    private readonly env: "dev" | "production"
   ) {}
 
-  generateDashboardUri(): string {
-    const dashboardUri =
-      this.env === "test"
-        ? this.DEV_DASHBOARD_BASE_URI
-        : this.PROD_DASHBOARD_BASE_URI;
+  generateDashboardUrl(intpcId: string, intpcWebsiteId: string): string {
+    const dashboardUrl =
+      this.env === "dev"
+        ? this.DEV_DASHBOARD_BASE_URL
+        : this.PROD_DASHBOARD_BASE_URL;
 
-    const dashboardUriString = dashboardUri + "?intpc_token" + this.accessToken;
+    const iframeUrl =
+      dashboardUrl +
+      "?intpc_token=" +
+      this.auth.generateINTPcAccessToken(intpcId).value +
+      "&externalWebsiteId=" +
+      intpcWebsiteId;
 
-    return dashboardUriString;
+    return iframeUrl;
   }
 }

@@ -1,5 +1,5 @@
 import { HttpClient } from "../http-client";
-import { Response } from "../response";
+import { CreatePackage } from "./types/create-package.type";
 import { Package } from "./types/package.type";
 
 export class PackagesApi {
@@ -7,27 +7,23 @@ export class PackagesApi {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  async list(): Promise<Response<Package[] | undefined>> {
-    return this.httpClient.get<Package[] | undefined>(this.#path);
+  async list(): Promise<Package[]> {
+    const response = await this.httpClient.get<Package[]>(this.#path);
+
+    return response.getPayload();
   }
 
-  async getById(packageId: string): Promise<Response<Package | undefined>> {
-    return this.httpClient.get<Package | undefined>(
-      `${this.#path}/${packageId}`
+  async getById(packageId: string): Promise<Package> {
+    const response = await this.httpClient.get<Package>(
+      this.#path + "/" + packageId
     );
+
+    return response.getPayload();
   }
 
-  async updateById(
-    packageId: string,
-    payload: Package
-  ): Promise<Response<Package | undefined>> {
-    return this.httpClient.update<Package | undefined>(
-      `${this.#path}/${packageId}`,
-      payload
-    );
-  }
+  async create(payload: CreatePackage): Promise<Package> {
+    const response = await this.httpClient.post<Package>(this.#path, payload);
 
-  async create(payload: Package): Promise<Response<Package | undefined>> {
-    return this.httpClient.post<Package>(this.#path, payload);
+    return response.getPayload();
   }
 }
