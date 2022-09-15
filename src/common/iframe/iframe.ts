@@ -9,7 +9,7 @@ export class IFrameUtils {
     private readonly env: "dev" | "production"
   ) {}
 
-  generateDashboardUrl(intpcId: string): string {
+  generateDashboardUrl(intpcId: string, intpcWebsiteId: string): string {
     const dashboardUrl =
       this.env === "dev"
         ? this.DEV_DASHBOARD_BASE_URL
@@ -18,7 +18,9 @@ export class IFrameUtils {
     const iframeUrl =
       dashboardUrl +
       "?intpc_token=" +
-      this.auth.generateINTPcAccessToken(intpcId).value;
+      this.auth.generateINTPcAccessToken(intpcId).value +
+      "&externalWebsiteId=" +
+      intpcWebsiteId;
 
     return iframeUrl;
   }

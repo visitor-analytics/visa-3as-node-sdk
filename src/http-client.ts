@@ -7,7 +7,7 @@ import { AccessToken } from "./token-signing";
 axiosRetry(axios, { retries: 3 });
 
 export class HttpClient {
-  DEV_API_GATEWAY_URI = "http://94.130.27.191:9090";
+  DEV_API_GATEWAY_URI = "http://localhost:9090";
   PROD_API_GATEWAY_URI = "";
 
   #host: string;
@@ -60,6 +60,7 @@ export class HttpClient {
             {
               headers: {
                 Authorization: "Bearer " + this.#accessToken.value,
+                "Content-Type": "application/json",
               },
             }
           );
@@ -69,6 +70,7 @@ export class HttpClient {
             {
               headers: {
                 Authorization: "Bearer " + this.#accessToken.value,
+                Accept: "application/json",
               },
             }
           );

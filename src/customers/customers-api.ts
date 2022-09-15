@@ -31,9 +31,9 @@ export class CustomersApi {
     return { items: response.getPayload(), metadata: response.getMetadata() };
   }
 
-  async getByExternalId(customerExternalId: string): Promise<Customer> {
+  async getByIntpCustomerId(intpCustomerId: string): Promise<Customer> {
     return (
-      await this.httpClient.get<Customer>(this.#path + "/" + customerExternalId)
+      await this.httpClient.get<Customer>(this.#path + "/" + intpCustomerId)
     ).getPayload();
   }
 }

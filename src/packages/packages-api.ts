@@ -1,4 +1,5 @@
 import { HttpClient } from "../http-client";
+import { CreatePackage } from "./types/create-package.type";
 import { Package } from "./types/package.type";
 
 export class PackagesApi {
@@ -20,7 +21,7 @@ export class PackagesApi {
     return response.getPayload();
   }
 
-  async create(payload: Package): Promise<Package> {
+  async create(payload: CreatePackage): Promise<Package> {
     const response = await this.httpClient.post<Package>(this.#path, payload);
 
     return response.getPayload();

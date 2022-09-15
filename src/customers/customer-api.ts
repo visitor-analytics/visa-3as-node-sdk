@@ -48,7 +48,7 @@ export class CustomerApi {
     return response.getPayload();
   }
 
-  generateIFrameDashboardUrl(): string {
-    return this.iframe.generateDashboardUrl(this.#customerId);
+  generateIFrameDashboardUrl(intpcWebsiteId: string): string {
+    return this.iframe.generateDashboardUrl(this.#customerId, intpcWebsiteId);
   }
 }

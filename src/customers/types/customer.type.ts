@@ -1,8 +1,8 @@
 export type Customer = {
   id: string;
-  externalId: string;
+  intpCustomerId: string;
   visaId: string;
   email: string;
-  partnerId: string;
+  intpId: string;
   createdAt: string;
 };

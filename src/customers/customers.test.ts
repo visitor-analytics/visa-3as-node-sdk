@@ -27,7 +27,7 @@ describe("Customer(s)", () => {
     });
 
     it("should call http client get when getById() is called", () => {
-      customersApi.getByExternalId(customerExternalId);
+      customersApi.getByIntpCustomerId(customerExternalId);
       expect(httpClient.get).toHaveBeenCalled();
     });
   });

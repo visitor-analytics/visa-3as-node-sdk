@@ -10,7 +10,6 @@ export class AccessTokenFactory {
   static getAccessToken(config: AccessTokenConfig): AccessToken {
     const header: TokenHeader = { kid: config.kid, alg: config.alg };
     const payload: TokenPayload = {
-      sub: config.claims.sub,
       roles: [config.claims.role],
       intp: config.claims.intp,
       intpc: config.claims.intpc,
@@ -31,7 +30,6 @@ export type AccessTokenConfig = {
   alg: string;
   privateKey: string;
   claims: {
-    sub: string;
     role: "intp" | "intpc";
     intp: string;
     intpc?: string;

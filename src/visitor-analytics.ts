@@ -23,22 +23,23 @@ export class VisitorAnalytics {
   // notifications
   #notificationsApi: NotificationsApi;
 
-  #auth: AuthUtils;
+  public auth: AuthUtils;
+
   // http
   #httpClient: HttpClient;
 
   constructor(private readonly params: VisaParams) {
-    this.#auth = new AuthUtils(params.intp);
+    this.auth = new AuthUtils(params.intp);
 
     this.#httpClient = new HttpClient({
-      accessToken: this.#auth.generateINTPAccessToken(),
-      env: params.environment,
+      accessToken: this.auth.generateINTPAccessToken(),
+      env: params.env,
       logLevel: params.logLevel,
     });
 
     this.#customerApi = new CustomerApi(
       this.#httpClient,
-      new IFrameUtils(this.#auth, params.environment)
+      new IFrameUtils(this.auth, params.env)
     );
     this.#customersApi = new CustomersApi(this.#httpClient);
 

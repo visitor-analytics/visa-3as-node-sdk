@@ -13,7 +13,6 @@ export class AuthUtils {
       kid: this.intp.id,
       privateKey: this.intp.privateKey,
       claims: {
-        sub: this.intp.domain,
         role: "intp",
         intp: this.intp.id,
       },
@@ -26,7 +25,6 @@ export class AuthUtils {
       kid: this.intp.id,
       privateKey: this.intp.privateKey,
       claims: {
-        sub: this.intp.domain,
         role: "intpc",
         intp: this.intp.id,
         intpc: intpcId,
