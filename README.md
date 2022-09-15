@@ -60,10 +60,9 @@ var VisitorAnalytics = require("visa-3as");
 const visa = new VisitorAnalytics({
   partner: {
     id: "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
-    domain: "http://3as-partner-domain.io",
     privateKey: `...`,
   },
-  environment: "test",
+  env: "test",
   logLevel: LogLevel.INFO,
 });
 ```

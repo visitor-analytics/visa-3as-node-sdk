@@ -1,11 +1,10 @@
 import { LogLevel } from "../logging";
 
 export type VisaParams = {
-  partner: {
+  intp: {
     id: string;
-    domain: string;
     privateKey: string;
   };
-  environment: "production" | "test";
+  env: "production" | "dev";
   logLevel: LogLevel;
 };
