@@ -1,1 +1,1 @@
-export { Packages } from "./packages";
+export { PackagesApi } from "./packages-api";

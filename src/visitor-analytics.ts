@@ -1,42 +1,82 @@
 import { HttpClient } from "./http-client";
 import { VisaParams } from "./common";
-import { Packages } from "./packages/packages";
-import { Clients } from "./clients/clients";
-import { Client } from "./clients/types/client.type";
+import { CustomerApi } from "./customers";
+import { CustomersApi } from "./customers";
+import { WebsiteApi, WebsitesApi } from "./websites";
+import { PackagesApi } from "./packages";
+import { NotificationsApi } from "./notifications";
+import { NotificationTypes } from "./notifications";
+import { AuthUtils } from "./common/auth/auth";
+import { IFrameUtils } from "./common/iframe";
+import { PackageApi } from "./packages/package-api";
 
 export class VisitorAnalytics {
-  // company data
-  #packages: Packages;
-  // company clients
-  #clients: Clients;
+  // customers
+  #customersApi: CustomersApi;
+  #customerApi: CustomerApi;
+  // customer packages
+  #packageApi: PackageApi;
+  #packagesApi: PackagesApi;
+  // customer websites;
+  #websiteApi: WebsiteApi;
+  #websitesApi: WebsitesApi;
+  // notifications
+  #notificationsApi: NotificationsApi;
+
+  public auth: AuthUtils;
+
   // http
   #httpClient: HttpClient;
 
   constructor(private readonly params: VisaParams) {
-    this.#httpClient = this.#setupClient(this.params);
+    this.auth = new AuthUtils(params.intp);
 
-    this.#packages = new Packages(this.#httpClient);
-    this.#clients = new Clients(this.#httpClient);
-  }
-
-  #setupClient(params: VisaParams): HttpClient {
-    return new HttpClient({
-      host: "http://localhost:8080",
-      company: {
-        id: params.company.id,
-        domain: params.company.domain,
-        privateKey: params.company.privateKey,
-      },
-      environment: params.environment,
+    this.#httpClient = new HttpClient({
+      accessToken: this.auth.generateINTPAccessToken(),
+      env: params.env,
       logLevel: params.logLevel,
     });
+
+    this.#customerApi = new CustomerApi(
+      this.#httpClient,
+      new IFrameUtils(this.auth, params.env)
+    );
+    this.#customersApi = new CustomersApi(this.#httpClient);
+
+    this.#websiteApi = new WebsiteApi(this.#httpClient);
+    this.#websitesApi = new WebsitesApi(this.#httpClient);
+
+    this.#packageApi = new PackageApi(this.#httpClient);
+    this.#packagesApi = new PackagesApi(this.#httpClient);
+
+    this.#notificationsApi = new NotificationsApi(this.#httpClient);
   }
 
-  get packages(): Packages {
-    return this.#packages;
+  get customers(): CustomersApi {
+    return this.#customersApi;
   }
 
-  get clients(): Clients {
-    return this.#clients;
+  customer(externalId: string): CustomerApi {
+    return this.#customerApi.setCustomerId(externalId);
+  }
+
+  get websites(): WebsitesApi {
+    return this.#websitesApi;
+  }
+
+  website(externalId: string): WebsiteApi {
+    return this.#websiteApi.setWebsiteId(externalId);
+  }
+
+  get packages(): PackagesApi {
+    return this.#packagesApi;
+  }
+
+  package(id: string): PackageApi {
+    return this.#packageApi.setPackageId(id);
+  }
+
+  notify(payload: NotificationTypes) {
+    return this.#notificationsApi.notify(payload);
   }
 }
