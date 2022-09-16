@@ -1,6 +1,6 @@
 export type CreateWebsite = {
-  externalId: string;
-  externalCustomerId: string;
+  intpWebsiteId: string;
+  intpCustomerId: string;
   domain: string;
   packageId: string;
 };

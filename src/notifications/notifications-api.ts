@@ -1,7 +1,7 @@
 import { HttpClient } from "../http-client";
-import { notificationCreateSchema } from "./schemas/notification-create.schema";
+import { notificationCreateSchema } from "./validation/notification-create.schema";
 import { NotificationCreated } from "./types/notification-create.type";
-import { notificationUpdateSchema } from "./schemas/notification-update.schema";
+import { notificationUpdateSchema } from "./validation/notification-update.schema";
 import { NotificationUpdated } from "./types/notification-update.type";
 import { NotificationTypes } from "./types";
 import { Notifications } from "./enums/notifications.enum";

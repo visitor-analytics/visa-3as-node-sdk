@@ -2,6 +2,7 @@ import { PaginatedResponse } from "../common";
 import { HttpClient } from "../http-client";
 import { CreateCustomer } from "./types/create-customer.type";
 import { Customer } from "./types/customer.type";
+import { createCustomerSchema } from "./validation/create-customer.schema";
 
 export class CustomersApi {
   #path: string = "/v2/3as/customers";
@@ -9,9 +10,14 @@ export class CustomersApi {
   constructor(private readonly httpClient: HttpClient) {}
 
   async create(createCustomer: CreateCustomer): Promise<Customer> {
-    return (
-      await this.httpClient.post<Customer>(this.#path, createCustomer)
-    ).getPayload();
+    await createCustomerSchema.validateAsync(createCustomer);
+
+    const response = await this.httpClient.post<Customer>(
+      this.#path,
+      createCustomer
+    );
+
+    return response.getPayload();
   }
 
   async list(

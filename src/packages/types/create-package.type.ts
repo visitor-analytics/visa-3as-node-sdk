@@ -1,4 +1,4 @@
-import { Currency } from "./currency.enum";
+import { Currency } from "./currenty.type";
 
 export type CreatePackage = {
   name: string;

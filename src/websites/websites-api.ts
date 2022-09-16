@@ -9,9 +9,9 @@ export class WebsitesApi {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  async getByExternalId(externalWebsiteId: string): Promise<Website> {
+  async getByIntpWebsiteId(intpWebsiteId: string): Promise<Website> {
     const response = await this.httpClient.get<Website>(
-      this.#path + "/" + externalWebsiteId
+      this.#path + "/" + intpWebsiteId
     );
 
     return response.getPayload();

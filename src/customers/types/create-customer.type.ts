@@ -1,4 +1,9 @@
 export type CreateCustomer = {
-  externalId: string;
+  intpCustomerId: string;
   email: string;
+  website: {
+    intpWebsiteId: string;
+    domain: string;
+    packageId: string;
+  };
 };

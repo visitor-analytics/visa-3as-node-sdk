@@ -2,48 +2,6 @@
 
 Provides easy access to VISA`s 3AS API.
 
-- [VisitorAnalytics 3AS Node SDK](#visitoranalytics-3as-node-sdk)
-  - [**Installation**](#installation)
-  - [**Getting started**](#getting-started)
-  - [**Promises**](#promises)
-  - [**Customers**](#customers)
-    - [List all available customers](#list-all-available-customers)
-      - [Request](#request)
-      - [Response](#response)
-        - [Definition](#definition)
-        - [Example](#example)
-    - [Get a single Customer by ID](#get-a-single-customer-by-id)
-      - [Request](#request-1)
-      - [Response](#response-1)
-        - [Definition](#definition-1)
-        - [Example](#example-1)
-  - [**Packages**](#packages)
-    - [List all available packages](#list-all-available-packages)
-      - [Request](#request-2)
-      - [Response](#response-2)
-        - [Definition](#definition-2)
-        - [Example](#example-2)
-    - [Get a single package by ID](#get-a-single-package-by-id)
-      - [Response](#response-3)
-        - [Definition](#definition-3)
-        - [Example](#example-3)
-  - [**Websites**](#websites)
-    - [Get all websites](#get-all-websites)
-      - [Request](#request-3)
-      - [Response](#response-4)
-        - [Definition](#definition-4)
-        - [Example](#example-4)
-    - [Get a single website by ID](#get-a-single-website-by-id)
-      - [Request](#request-4)
-      - [Response](#response-5)
-        - [Definition](#definition-5)
-        - [Example](#example-5)
-  - [**Subscription Notifications**](#subscription-notifications)
-    - [Subscription created Notification](#subscription-created-notification)
-    - [Subscription updated Notification](#subscription-updated-notification)
-
-<br>
-
 ## **Installation**
 
 ```sh
@@ -58,11 +16,11 @@ npm install visa-3as --save
 var VisitorAnalytics = require("visa-3as");
 
 const visa = new VisitorAnalytics({
-  partner: {
+  intp: {
     id: "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
     privateKey: `...`,
   },
-  env: "test",
+  env: "dev",
   logLevel: LogLevel.INFO,
 });
 ```
@@ -75,312 +33,148 @@ Every API call returns a promise.
 
 // add details on response format on success & error
 
-<br>
+## Customers API
 
-## **Customers**
-
-3AS Partners are able to get data about their customers.
+Integration partners (INTP) are able to get data about their customers (INTPc).
 
 ### List all available customers
 
-#### Request
-
 ```js
-const customers = await visa.customers.list();
+visa->customers->list();
 ```
 
-#### Response
+### Get a single customer by its INTP given id
 
-##### Definition
-
-```typescript
-{
-  "payload": [
-    {
-      "id": uuid,
-      "externalId": uuid,
-      "partnerId": uuid,
-      "createdAt": Date
-    }
-  ],
-  "meta": {
-    "page": number,
-    "pageSize": number,
-    "pageTotal": number,
-    "total": number
-  }
-}
+```javascript
+visa.customers.getByIntpCustomerId(INTP_CUSTOMER_ID);
 ```
 
-##### Example
+### Register a new customer
 
-```js
-{
-  "payload": [
-    {
-      "id": "7128840a-5347-49a4-8dfa-9022d8dad21a",
-      "externalId": "7128840a-5347-49a4-8dfa-9022d8dad21a",
-      "partnerId": "7128840a-5347-49a4-8dfa-9022d8dad21a",
-      "createdAt": "2019-12-01"
-    }
-  ],
-  "meta": {
-    "page": 1,
-    "pageSize": 10,
-    "pageTotal": 100,
-    "total": 92
-  }
-}
-```
-
-### Get a single Customer by ID
-
-#### Request
-
-```js
-const customerId = "8e683b6a-9643-466b-ae63-bbffa7be18a1";
-
-const customer = await visa.customers.getById(customerId);
-```
-
-#### Response
-
-##### Definition
-
-```ts
-{
-  "payload": {
-    "id": uuid,
-    "externalId": uuid,
-    "partnerId": uuid,
-    "createdAt": Date
-  }
-}
-```
-
-##### Example
-
-```js
-{
-  "payload": {
-    "id": "8e683b6a-9643-466b-ae63-bbffa7be18a1",
-    "externalId": "7128840a-5347-49a4-8dfa-9022d8dad21a",
-    "partnerId": "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
-    "createdAt": "2019-12-01"
-  }
-}
+```javascript
+visa.customers.create({
+  intpCustomerId: INTP_CUSTOMER_ID,
+  email: INTP_CUSTOMER_EMAIL,
+  website: {
+    intpWebsiteId: INTP_WEBSITE_ID,
+    domain: INTP_WEBSITE_DOMAIN_URI,
+    packageId: PACKAGE_UUID,
+  },
+});
 ```
 
 <br>
 
-## **Packages**
+## Customer API
 
-3AS Partners are able to get data about their customers packages
+### List all websites belonging to an INTP Customer
+
+```javascript
+visa.customer(INTP_CUSTOMER_ID).listWebsites();
+```
+
+### Delete a Customer belonging to an INTP
+
+```js
+visa.customer(INTP_CUSTOMER_ID).delete();
+```
+
+### Generate the VisitorAnalytics Dashboard IFrame Url
+
+```js
+visa.customer(INTP_CUSTOMER_ID).generateIFrameDashboardUrl(INTP_WEBSITE_ID);
+```
+
+<br>
+
+## Packages API
+
+An Integration Partner (INTP) is able to get data about their packages
 
 ### List all available packages
 
-#### Request
-
 ```js
-const packages = await visa.packages.get();
-```
-
-#### Response
-
-##### Definition
-
-```ts
-{
-  "payload": [
-    {
-      "id": uuid,
-      "name": string,
-      "touchPoints": number,
-      "partnerId": uuid,
-      "createdAt": Date
-    }
-  ]
-}
-```
-
-##### Example
-
-```js
-{
-  "payload": [
-    {
-      "id": "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
-      "name": "Package Name",
-      "touchPoints": 10000,
-      "partnerId": "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
-      "createdAt": "2019-12-01"
-    }
-  ]
-}
+visa.packages.list();
 ```
 
 ### Get a single package by ID
 
 ```js
-const packageId = "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02";
-
-const package = await visa.packages.get(packageId);
+visa.packages.getById(PACKAGE_UUID);
 ```
 
-#### Response
-
-##### Definition
-
-```ts
-{
-  "payload": {
-    "id": uuid,
-    "name": string,
-    "touchPoints": number,
-    "partnerId": uuid,
-    "createdAt": Date
-  }
-}
-```
-
-##### Example
+### Create a package
 
 ```js
-{
-  "payload": {
-    "id": "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
-    "name": "Package Name",
-    "touchPoints": 10000,
-    "partnerId": "979c93c5-b4de-4fd2-8ecf-bfd18bfaeecb",
-    "createdAt": "2019-12-01"
-  }
-
-}
+visa.packages.create({
+  name: PACKAGE_NAME,
+  touchpoints: TOUCHPOINT_LIMIT,
+  price: FLOAT,
+  currency: CURRENCY_CODE, // ex: EUR, USD, RON
+});
 ```
 
 <br>
 
-## **Websites**
+## Package API
 
-3AS Partners are able to get data about their customers websites.
-
-### Get all websites
-
-#### Request
+### An INTP can update its packages
 
 ```js
-const customerId = "8e683b6a-9643-466b-ae63-bbffa7be18a1";
-
-const websites = await visa.customer(customerId).listWebsites();
-```
-
-#### Response
-
-##### Definition
-
-```ts
-{
-  "payload": [
-    {
-      "id": uuid,
-      "domain": uri,
-      "customerId": uuid,
-      "packageId": uuid,
-      "createdAt": Date
-    }
-  ]
-}
-```
-
-##### Example
-
-```js
-{
-  "payload": [
-    {
-      "id": "73f8817d-dc16-43af-9da1-b4166c6d0613",
-      "domain": "bigstuff.visitoranalytics.io",
-      "customerId": "8e683b6a-9643-466b-ae63-bbffa7be18a1",
-      "packageId": "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
-      "createdAt": "2019-12-01"
-    }
-  ]
-}
-```
-
-### Get a single website by ID
-
-#### Request
-
-```js
-const websiteId = "73f8817d-dc16-43af-9da1-b4166c6d0613";
-
-const website = await visa.websites.getById(websiteId);
-```
-
-#### Response
-
-##### Definition
-
-```ts
-{
-  "payload": {
-    "id": uuid,
-    "domain": uri,
-    "customerId": uuid,
-    "packageId": uuid,
-    "createdAt": Date
-  }
-}
-```
-
-##### Example
-
-```js
-{
-  "payload": {
-    "id": "73f8817d-dc16-43af-9da1-b4166c6d0613",
-    "domain": "bigstuff.visitoranalytics.io",
-    "customerId": "8e683b6a-9643-466b-ae63-bbffa7be18a1",
-    "packageId": "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
-    "createdAt": "2019-12-01"
-  }
-}
+visa.package(PACKAGE_UUID).update({
+  name: UPDATED_PACKAGE_NAME,
+});
 ```
 
 <br>
 
-## **Subscription Notifications**
+## Websites API
 
-3AS Partners must be able to send notifications through the SDK regarding the billing & subscription events
-
-### Subscription created Notification
+### List all websites
 
 ```js
-visa.notify({
-  type: "SUBSCRIPTION_CREATED",
-  payload: {
-    packageId: "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
-    website: {
-      id: "73f8817d-dc16-43af-9da1-b4166c6d0613",
-      domain: "domain.visa.io",
-      language: "en",
-      timezone: "GMT+3",
-    },
-  },
+visa.websites.list();
+```
+
+### Get a single website by its INTP given id
+
+```js
+visa.websites.getByIntpWebsiteId(INTP_WEBSITE_ID);
+```
+
+### Create a website
+
+```js
+visa.websites.create({
+  intpWebsiteId: INTP_WEBSITE_ID,
+  intpCustomerId: INTP_CUSTOMER_ID,
+  domain: INTP_WEBSITE_DOMAIN,
+  packageId: PACKAGE_UUID,
 });
 ```
 
-### Subscription updated Notification
+<br>
+
+## Website API
+
+### Delete a website by its INTP given id
 
 ```js
-visa.notify({
-  type: "SUBSCRIPTION_UPDATED",
-  payload: {
-    packageId: "bec1c3a3-31e3-4b5d-b56e-d5084ed99f02",
-    website: {
-      id: "58173014-6dff-4bf2-a2ac-5682c68a49ea",
-    },
-  },
-});
+visa.website(INTP_WEBSITE_ID)->delete();
+```
+
+<br>
+
+## Utils API
+
+### Generate a valid access token for the current INTP configuration.
+
+```js
+visa.auth.generateINTPAccessToken();
+```
+
+### Generate a valid access token for the current INTPc configuration.
+
+```js
+visa.auth.generateINTPcAccessToken(INTP_CUSTOMER_ID);
 ```

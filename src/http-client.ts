@@ -7,7 +7,7 @@ import { AccessToken } from "./token-signing";
 axiosRetry(axios, { retries: 3 });
 
 export class HttpClient {
-  DEV_API_GATEWAY_URI = "http://localhost:9090";
+  DEV_API_GATEWAY_URI = "https://api-gateway.va-endpoint.com";
   PROD_API_GATEWAY_URI = "";
 
   #host: string;

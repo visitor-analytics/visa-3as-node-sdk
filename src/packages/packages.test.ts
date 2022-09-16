@@ -2,7 +2,6 @@ import { mock, mockClear } from "jest-mock-extended";
 import { PackagesApi } from "./packages-api";
 import { HttpClient } from "../http-client";
 import { Package } from "./types/package.type";
-import { Currency } from "./types/currency.enum";
 
 describe("Packages", () => {
   let packages: PackagesApi;
@@ -10,9 +9,10 @@ describe("Packages", () => {
   const packageId = "11eec738-15e1-42af-8fc8-ddf814af5001";
   const packagePayload: Package = {
     id: packageId,
+    intpId: "abc",
     name: "free",
     price: 0.0,
-    currency: Currency.EUR,
+    currency: "EUR",
     touchpoints: 2,
     createdAt: new Date().toDateString(),
   };

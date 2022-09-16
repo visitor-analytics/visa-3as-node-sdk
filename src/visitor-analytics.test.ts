@@ -1,4 +1,4 @@
-import { Currency, LogLevel, VisitorAnalytics } from ".";
+import { LogLevel, VisitorAnalytics } from ".";
 
 const PRIVATE_KEY = `-----BEGIN PRIVATE KEY-----
 MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCEuiQbjbI7IBcT
@@ -37,10 +37,8 @@ describe("VisitorAnalytics", () => {
         privateKey: PRIVATE_KEY,
       },
       env: "dev",
-      logLevel: LogLevel.ERROR,
+      logLevel: LogLevel.DEBUG,
     });
-
-    // console.log();
 
     // console.log(visa.auth.generateINTPAccessToken().value);
 
@@ -49,21 +47,49 @@ describe("VisitorAnalytics", () => {
     // console.log(
     //   await visa.packages.getById("5ecff82d-c391-48e6-9205-b96818aa25ff")
     // );
+    // console.log(
+    //   await visa.packages.create({
+    //     name: "ADV",
+    //     touchpoints: 10000,
+    //     price: 39.99,
+    //     currency: "EUR",
+    //   })
+    // );
 
     // CUSTOMERS
     // console.log(await visa.customers.list());
-    // console.log(await await visa.customers.getByIntpCustomerId("x-1"));
+    // console.log(await visa.customers.getByIntpCustomerId("x-1"));
+
+    // await visa.customers.create({
+    //   intpCustomerId: "x-2",
+    //   email: "3rwerw-tew@x.com",
+    //   website: {
+    //     intpWebsiteId: " ",
+    //     domain: "",
+    //     packageId: "",
+    //   },
+    // });
+
+    // CUSTOMER
+    // console.log(await visa.customer("x-1").listWebsites());
+    // console.log(await visa.customer("x-1").delete());
     // console.log(
     //   visa.customer("x-1").generateIFrameDashboardUrl("intpc-ws-001")
     // );
 
+    // WEBSITES
+    // console.log(await visa.websites.list());
+    // console.log(await visa.websites.getByIntpWebsiteId("intpc-ws-001"));
     // console.log(
-    //   await visa.packages.create({
-    //     name: "FREE",
-    //     touchpoints: 400,
-    //     price: 0.0,
-    //     currency: Currency.EUR,
+    //   await visa.websites.create({
+    //     intpCustomerId: "x-1",
+    //     intpWebsiteId: "dasfsdfs",
+    //     domain: "eaxample.io",
+    //     packageId: "",
     //   })
     // );
+
+    // WEBSITE
+    // console.log(await visa.website("intpc-ws-001").delete());
   });
 });

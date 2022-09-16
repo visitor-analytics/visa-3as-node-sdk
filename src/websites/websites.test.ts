@@ -17,7 +17,7 @@ describe("Websites", () => {
   });
 
   it("should call http-client get when getById is called", () => {
-    websitesApi.getByExternalId(websiteId);
+    websitesApi.getByIntpWebsiteId(websiteId);
     expect(httpClient.get).toHaveBeenCalled();
   });
 });
