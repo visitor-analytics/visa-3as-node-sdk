@@ -11,8 +11,8 @@ export class AccessTokenFactory {
     const header: TokenHeader = { kid: config.kid, alg: config.alg };
     const payload: TokenPayload = {
       roles: [config.claims.role],
-      intp: config.claims.intp,
-      intpc: config.claims.intpc,
+      intp_id: config.claims.intpId,
+      intpc_id: config.claims.intpcId,
       exp: dayjs().add(10, "minutes").unix(),
       iat: dayjs().unix(),
     };
@@ -31,7 +31,7 @@ export type AccessTokenConfig = {
   privateKey: string;
   claims: {
     role: "intp" | "intpc";
-    intp: string;
-    intpc?: string;
+    intpId: string;
+    intpcId?: string;
   };
 };

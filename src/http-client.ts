@@ -1,6 +1,7 @@
 import axios, { Axios } from "axios";
 import axiosRetry from "axios-retry";
-import { Logger, LogLevel } from "./common/logging";
+import { Logger } from "./common/logging/logger";
+import { LogLevel } from "./common/logging/types";
 import { Response, VisaApiResponse } from "./response";
 import { AccessToken } from "./token-signing";
 

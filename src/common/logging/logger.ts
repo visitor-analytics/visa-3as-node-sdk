@@ -1,7 +1,7 @@
 import pino, { Logger as PinoLogger } from "pino";
-import { LogLevel } from "./log-levels";
+import { LogLevel } from "./types/log-levels";
 import { pinoPretty } from "./pino-pretty";
-import { LoggerOptions } from "./types";
+import { LoggerOptions } from "./types/logger-options";
 
 export class Logger {
   #pino: PinoLogger;

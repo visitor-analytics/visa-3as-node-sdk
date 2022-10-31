@@ -4,8 +4,6 @@ import { CustomerApi } from "./customers";
 import { CustomersApi } from "./customers";
 import { WebsiteApi, WebsitesApi } from "./websites";
 import { PackagesApi } from "./packages";
-import { NotificationsApi } from "./notifications";
-import { NotificationTypes } from "./notifications";
 import { AuthUtils } from "./common/auth/auth";
 import { IFrameUtils } from "./common/iframe";
 import { PackageApi } from "./packages/package-api";
@@ -20,8 +18,6 @@ export class VisitorAnalytics {
   // customer websites;
   #websiteApi: WebsiteApi;
   #websitesApi: WebsitesApi;
-  // notifications
-  #notificationsApi: NotificationsApi;
 
   public auth: AuthUtils;
 
@@ -48,8 +44,6 @@ export class VisitorAnalytics {
 
     this.#packageApi = new PackageApi(this.#httpClient);
     this.#packagesApi = new PackagesApi(this.#httpClient);
-
-    this.#notificationsApi = new NotificationsApi(this.#httpClient);
   }
 
   get customers(): CustomersApi {
@@ -74,9 +68,5 @@ export class VisitorAnalytics {
 
   package(id: string): PackageApi {
     return this.#packageApi.setPackageId(id);
-  }
-
-  notify(payload: NotificationTypes) {
-    return this.#notificationsApi.notify(payload);
   }
 }

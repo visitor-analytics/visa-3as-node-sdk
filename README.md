@@ -111,6 +111,7 @@ visa.packages.create({
   touchpoints: TOUCHPOINT_LIMIT,
   price: FLOAT,
   currency: CURRENCY_CODE, // ex: EUR, USD, RON
+  period: PERIOD, // monthly, yearly
 });
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "@visa/3as-sdk",
-  "version": "0.9.0",
+  "version": "0.13.0",
   "description": "NodeJS SDK for 3AS Companies",
   "author": "os@visitor-analytics.io",
   "license": "ISC",

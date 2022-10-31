@@ -14,7 +14,7 @@ export class AuthUtils {
       privateKey: this.intp.privateKey,
       claims: {
         role: "intp",
-        intp: this.intp.id,
+        intpId: this.intp.id,
       },
     });
   }
@@ -26,8 +26,8 @@ export class AuthUtils {
       privateKey: this.intp.privateKey,
       claims: {
         role: "intpc",
-        intp: this.intp.id,
-        intpc: intpcId,
+        intpId: this.intp.id,
+        intpcId: intpcId,
       },
     });
   }

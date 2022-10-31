@@ -1,4 +1,4 @@
-import { LogLevel } from "../logging";
+import { LogLevel } from "../logging/types";
 
 export type VisaParams = {
   intp: {

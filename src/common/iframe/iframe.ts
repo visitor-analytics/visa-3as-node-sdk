@@ -1,7 +1,7 @@
 import { AuthUtils } from "../auth/auth";
 
 export class IFrameUtils {
-  DEV_DASHBOARD_BASE_URL = "https://dev-dashboard.va-endpoint.com";
+  DEV_DASHBOARD_BASE_URL = "https://dev-dashboard-3as.va-endpoint.com";
   PROD_DASHBOARD_BASE_URL = "";
 
   constructor(

@@ -14,6 +14,7 @@ describe("Packages", () => {
     price: 0.0,
     currency: "EUR",
     touchpoints: 2,
+    period: "monthly",
     createdAt: new Date().toDateString(),
   };
 

@@ -1,1 +1,1 @@
-export { LoggerOptions } from "./logger-options";
+export { LogLevel } from "./log-levels";
