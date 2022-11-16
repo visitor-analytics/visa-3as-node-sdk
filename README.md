@@ -166,6 +166,52 @@ visa.website(INTP_WEBSITE_ID)->delete();
 
 <br>
 
+## Subscription Notifications
+
+### API for managing subscription state
+
+### Upgrade - immediately applies a higher stp count package to the subscription
+
+```js
+visa.subscriptions.upgrade({
+  intpWebsiteId: INTP_WEBSITE_ID,
+  packageId: PACKAGE_UUID,
+});
+```
+
+### Downgrade - auto-renew the subscription at the end of the current billing interval to a new lower stp count package
+
+```js
+visa.subscriptions.downgrade({
+  intpWebsiteId: INTP_WEBSITE_ID,
+  packageId: PACKAGE_UUID,
+});
+```
+
+### Cancel - disable the subscription auto-renewal at the end of the current billing interval
+
+```js
+visa.subscriptions.cancel({
+  intpWebsiteId: INTP_WEBSITE_ID,
+});
+```
+
+### Resume - re-enable the subscription auto-renewal at the end of the current billing interval
+
+```js
+visa.subscriptions.resume({
+  intpWebsiteId: INTP_WEBSITE_ID,
+});
+```
+
+### Deactivate - immediately disables the subscription, reversible by an upgrade
+
+```php
+visa.subscriptions.deactivate({
+  intpWebsiteId: INTP_WEBSITE_ID,
+});
+```
+
 ## Utils API
 
 ### Generate a valid access token for the current INTP configuration.
