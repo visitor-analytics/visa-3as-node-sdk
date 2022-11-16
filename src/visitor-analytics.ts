@@ -7,6 +7,7 @@ import { PackagesApi } from "./packages";
 import { AuthUtils } from "./common/auth/auth";
 import { IFrameUtils } from "./common/iframe";
 import { PackageApi } from "./packages/package-api";
+import { SubscriptionsApi } from "./noitifications/subscriptions/subscriptions-api";
 
 export class VisitorAnalytics {
   // customers
@@ -18,6 +19,9 @@ export class VisitorAnalytics {
   // customer websites;
   #websiteApi: WebsiteApi;
   #websitesApi: WebsitesApi;
+  // notifications
+  // subscriptions
+  #subscriptionApi: SubscriptionsApi;
 
   public auth: AuthUtils;
 
@@ -44,6 +48,8 @@ export class VisitorAnalytics {
 
     this.#packageApi = new PackageApi(this.#httpClient);
     this.#packagesApi = new PackagesApi(this.#httpClient);
+
+    this.#subscriptionApi = new SubscriptionsApi(this.#httpClient);
   }
 
   get customers(): CustomersApi {
@@ -68,5 +74,9 @@ export class VisitorAnalytics {
 
   package(id: string): PackageApi {
     return this.#packageApi.setPackageId(id);
+  }
+
+  get subscriptions(): SubscriptionsApi {
+    return this.#subscriptionApi;
   }
 }

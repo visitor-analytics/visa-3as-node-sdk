@@ -1,0 +1,6 @@
+import Joi from "joi";
+
+export const upgradeSubscriptionSchema = Joi.object({
+  intpWebsiteId: Joi.string().required(),
+  packageId: Joi.string().uuid().required(),
+});
