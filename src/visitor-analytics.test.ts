@@ -45,7 +45,7 @@ describe("VisitorAnalytics", () => {
     // PACKAGES
     // console.log(await visa.packages.list());
     // console.log(
-    //   await visa.packages.getById("5ecff82d-c391-48e6-9205-b96818aa25ff")
+    // await visa.packages.getById("5ecff82d-c391-48e6-9205-b96818aa25ff");
     // );
     // console.log(
     //   await visa.packages.create({
@@ -91,5 +91,19 @@ describe("VisitorAnalytics", () => {
 
     // WEBSITE
     // console.log(await visa.website("intpc-ws-001").delete());
+
+    // SUBSCRIPTIONS
+    // console.log(
+    // try {
+    //   await visa.subscriptions.downgrade({
+    //     websiteId: "f6154494-0b46-4b52-b598-43b4a803fb45",
+    //     packageId: "9b7e3919-06dd-4632-aa85-d0ce2815cd24",
+    //   });
+    // } catch (error) {
+    //   console.log((error as Error).message);
+    // }
+
+    //   await visa.subscriptions.cancel({websiteId: ""})
+    // );
   });
 });
