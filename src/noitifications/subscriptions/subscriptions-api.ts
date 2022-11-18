@@ -16,64 +16,50 @@ export class SubscriptionsApi {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  async upgrade(
-    upgradeSubscription: UpgradeSubscription
-  ): Promise<Subscription> {
+  async upgrade(upgradeSubscription: UpgradeSubscription): Promise<void> {
     await upgradeSubscriptionSchema.validateAsync(upgradeSubscription);
 
-    const response = await this.httpClient.post<Subscription>(
+    await this.httpClient.post<Subscription>(
       this.#path + "/upgrade",
       upgradeSubscription
     );
-
-    return response.getPayload();
   }
 
-  async downgrade(
-    downgradeSubscription: DowngradeSubscription
-  ): Promise<Subscription> {
+  async downgrade(downgradeSubscription: DowngradeSubscription): Promise<void> {
     await downgradeSubscriptionSchema.validateAsync(downgradeSubscription);
 
-    const response = await this.httpClient.post<Subscription>(
+    await this.httpClient.post<Subscription>(
       this.#path + "/downgrade",
       downgradeSubscription
     );
-
-    return response.getPayload();
   }
 
-  async cancel(cancelSubscription: CancelSubscription): Promise<Subscription> {
+  async cancel(cancelSubscription: CancelSubscription): Promise<void> {
     await cancelSubscriptionSchema.validateAsync(cancelSubscription);
 
-    const response = await this.httpClient.post<Subscription>(
+    await this.httpClient.post<Subscription>(
       this.#path + "/cancel",
       cancelSubscription
     );
-
-    return response.getPayload();
   }
 
-  async resume(resumeSubscription: ResumeSubscription): Promise<Subscription> {
+  async resume(resumeSubscription: ResumeSubscription): Promise<void> {
     await resumeSubscriptionSchema.validateAsync(resumeSubscription);
 
-    const response = await this.httpClient.post<Subscription>(
+    await this.httpClient.post<Subscription>(
       this.#path + "/resume",
       resumeSubscription
     );
-
-    return response.getPayload();
   }
 
   async deactivate(
     deactivateSubscription: DeactivateSubscription
-  ): Promise<Subscription> {
+  ): Promise<void> {
     await deactivateSubscriptionSchema.validateAsync(deactivateSubscription);
 
-    const response = await this.httpClient.post<Subscription>(
+    await this.httpClient.post<Subscription>(
       this.#path + "/deactivate",
       deactivateSubscription
     );
-
-    return response.getPayload();
   }
 }
