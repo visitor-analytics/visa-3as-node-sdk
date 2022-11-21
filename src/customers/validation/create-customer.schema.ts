@@ -5,7 +5,7 @@ export const createCustomerSchema = Joi.object({
   email: Joi.string().email().required(),
   website: {
     intpWebsiteId: Joi.string().required(),
-    domain: Joi.string().uri().required(),
+    domain: Joi.string().domain().required(),
     packageId: Joi.string().uuid().required(),
   },
 });

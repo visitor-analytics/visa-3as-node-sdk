@@ -12,11 +12,9 @@ export class WebsiteApi {
     return this;
   }
 
-  public async delete(): Promise<Website> {
-    const response = await this.httpClient.delete<Website>(
+  public async delete(): Promise<void> {
+    await this.httpClient.delete<Website>(
       "/v2/3as/websites/" + this.#externalWebsiteId
     );
-
-    return response.getPayload();
   }
 }
