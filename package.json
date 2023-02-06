@@ -7,6 +7,9 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "@visa:registry": "https://gitlab.va-endpoint.com/api/v4/projects/23/packages/npm/"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "lint": "tsc",
