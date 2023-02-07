@@ -1,5 +1,9 @@
 image: node:latest
 
+stages:
+  - build
+  - publish
+
 build:
   stage: build
   script:
