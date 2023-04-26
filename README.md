@@ -2,18 +2,16 @@
 
 Provides easy access to VISA`s 3AS API.
 
-## **Installation**
+## Installation
 
 ```sh
-npm install visa-3as --save
+npm install @visitor-analytics/3as-sdk --save
 ```
 
-<br>
-
-## **Getting started**
+## Getting started
 
 ```js
-var VisitorAnalytics = require("visa-3as");
+import { VisitorAnalytics, LogLevel } from "@visitor-analytics/3as-sdk";
 
 const visa = new VisitorAnalytics({
   intp: {
@@ -25,9 +23,7 @@ const visa = new VisitorAnalytics({
 });
 ```
 
-<br>
-
-## **Promises**
+## Promises
 
 Every API call returns a promise.
 
@@ -40,7 +36,7 @@ Integration partners (INTP) are able to get data about their customers (INTPc).
 ### List all available customers
 
 ```js
-visa->customers->list();
+visa.customers.list();
 ```
 
 ### Get a single customer by its INTP given id
@@ -63,8 +59,6 @@ visa.customers.create({
 });
 ```
 
-<br>
-
 ## Customer API
 
 ### List all websites belonging to an INTP Customer
@@ -84,8 +78,6 @@ visa.customer(INTP_CUSTOMER_ID).delete();
 ```js
 visa.customer(INTP_CUSTOMER_ID).generateIFrameDashboardUrl(INTP_WEBSITE_ID);
 ```
-
-<br>
 
 ## Packages API
 
@@ -115,8 +107,6 @@ visa.packages.create({
 });
 ```
 
-<br>
-
 ## Package API
 
 ### An INTP can update its packages
@@ -126,8 +116,6 @@ visa.package(PACKAGE_UUID).update({
   name: UPDATED_PACKAGE_NAME,
 });
 ```
-
-<br>
 
 ## Websites API
 
@@ -154,8 +142,6 @@ visa.websites.create({
 });
 ```
 
-<br>
-
 ## Website API
 
 ### Delete a website by its INTP given id
@@ -163,8 +149,6 @@ visa.websites.create({
 ```js
 visa.website(INTP_WEBSITE_ID)->delete();
 ```
-
-<br>
 
 ## Subscription Notifications
 
