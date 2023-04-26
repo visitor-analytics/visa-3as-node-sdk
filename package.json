@@ -1,5 +1,5 @@
 {
-  "name": "@visa/3as-sdk",
+  "name": "@visitor-analytics/3as-sdk",
   "version": "1.0.0",
   "description": "NodeJS SDK for 3AS Companies",
   "author": "os@visitor-analytics.io",
@@ -7,9 +7,6 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "publishConfig": {
-    "@visa:registry": "https://gitlab.va-endpoint.com/api/v4/projects/23/packages/npm/"
-  },
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "lint": "tsc",
