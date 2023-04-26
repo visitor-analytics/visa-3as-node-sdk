@@ -1,5 +1,5 @@
 {
-  "name": "@visitor-analytcs/3as-sdk",
+  "name": "@visitor-analytics-io/3as-sdk",
   "version": "1.0.0",
   "description": "NodeJS SDK for 3AS Companies",
   "author": "os@visitor-analytics.io",
