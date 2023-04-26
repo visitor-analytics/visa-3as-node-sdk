@@ -9,6 +9,7 @@ axiosRetry(axios, { retries: 3 });
 
 export class HttpClient {
   DEV_API_GATEWAY_URI = "https://api-gateway.va-endpoint.com";
+  STAGE_API_GATEWAY_URI = "https://stage-api-gateway.va-endpoint.com";
   PROD_API_GATEWAY_URI = "";
 
   #host: string;
@@ -20,14 +21,21 @@ export class HttpClient {
   constructor(params: {
     readonly accessToken: AccessToken;
     readonly logLevel: LogLevel;
-    readonly env: "production" | "dev";
+    readonly env: "dev" | "stage";
   }) {
     this.#http = axios;
 
-    this.#host =
-      params.env === "dev"
-        ? this.DEV_API_GATEWAY_URI
-        : this.PROD_API_GATEWAY_URI;
+    switch (params.env) {
+      case "dev":
+        this.#host = this.DEV_API_GATEWAY_URI;
+        break;
+      case "stage":
+        this.#host = this.STAGE_API_GATEWAY_URI;
+      default:
+        throw new Error("Unsupported env: " + params.env);
+        break;
+    }
+
     this.#accessToken = params.accessToken;
 
     this.#logger = new Logger({

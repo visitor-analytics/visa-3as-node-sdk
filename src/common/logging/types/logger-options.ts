@@ -1,3 +1,3 @@
 import { LogLevel } from "./log-levels";
 
-export type LoggerOptions = { env: "dev" | "production"; level: LogLevel };
+export type LoggerOptions = { env: "dev" | "stage"; level: LogLevel };
