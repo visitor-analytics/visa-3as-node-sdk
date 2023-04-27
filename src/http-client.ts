@@ -31,6 +31,7 @@ export class HttpClient {
         break;
       case "stage":
         this.#host = this.STAGE_API_GATEWAY_URI;
+        break;
       default:
         throw new Error("Unsupported env: " + params.env);
         break;

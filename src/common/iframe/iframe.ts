@@ -2,7 +2,7 @@ import { AuthUtils } from "../auth/auth";
 
 export class IFrameUtils {
   DEV_DASHBOARD_BASE_URL = "https://dev-dashboard-3as.va-endpoint.com";
-  STAGE_DASHBOARD_BASE_URL = "";
+  STAGE_DASHBOARD_BASE_URL = "https://stage-dashboard-3as.va-endpoint.com";
 
   constructor(
     private readonly auth: AuthUtils,
@@ -10,10 +10,18 @@ export class IFrameUtils {
   ) {}
 
   generateDashboardUrl(intpcId: string, intpcWebsiteId: string): string {
-    const dashboardUrl =
-      this.env === "dev"
-        ? this.DEV_DASHBOARD_BASE_URL
-        : this.STAGE_DASHBOARD_BASE_URL;
+    let dashboardUrl;
+
+    switch (this.env) {
+      case "dev":
+        dashboardUrl = this.DEV_DASHBOARD_BASE_URL;
+        break;
+      case "stage":
+        dashboardUrl = this.STAGE_DASHBOARD_BASE_URL;
+        break;
+      default:
+        throw new Error("Unsupported iframe env: " + this.env);
+    }
 
     const iframeUrl =
       dashboardUrl +
