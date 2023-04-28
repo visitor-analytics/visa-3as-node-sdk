@@ -7,5 +7,6 @@ export const createCustomerSchema = Joi.object({
     intpWebsiteId: Joi.string().required(),
     domain: Joi.string().domain().required(),
     packageId: Joi.string().uuid().required(),
+    billingDate: Joi.string().isoDate().optional(),
   },
 });

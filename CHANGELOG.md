@@ -1,5 +1,11 @@
 # @visa/3as-sdk
 
+## 1.1.0
+
+### Minor Changes
+
+- Added Trial functionality by explicitly requesting it through a new bool parameter called `trial` when using the upgrade subscription notification
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,4 +1,4 @@
-import axios, { Axios } from "axios";
+import axios, { Axios, AxiosError } from "axios";
 import axiosRetry from "axios-retry";
 import { Logger } from "./common/logging/logger";
 import { LogLevel } from "./common/logging/types";
@@ -49,17 +49,19 @@ export class HttpClient {
 
   #routeCreate(axiosMethod: "post" | "get" | "patch" | "delete") {
     return async <T>(path: string, payload?: unknown): Promise<Response<T>> => {
-      this.#logger.logInfo({
-        method: axiosMethod.toUpperCase(),
-        path: this.#host + path,
-      });
-
       if (this.#accessToken.isExpired) {
         this.#accessToken = this.#accessToken.refresh();
 
         this.#logger.logInfo("Refreshed access token.");
         this.#logger.logDebug(this.#accessToken.value);
       }
+
+      this.#logger.logInfo({
+        method: axiosMethod.toUpperCase(),
+        path: this.#host + path,
+        payload,
+        accessToken: this.#accessToken.value,
+      });
 
       try {
         let response;
@@ -85,12 +87,11 @@ export class HttpClient {
             }
           );
         }
-
         this.#logger.logDebug(response.data as unknown as object);
+
         return new Response<T>(response);
       } catch (error) {
-        this.#logger.logError((error as Error).message);
-        throw new Error((error as Error).message);
+        throw (error as AxiosError).response?.data;
       }
     };
   }

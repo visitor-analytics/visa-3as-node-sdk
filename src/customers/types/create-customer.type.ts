@@ -5,5 +5,6 @@ export type CreateCustomer = {
     intpWebsiteId: string;
     domain: string;
     packageId: string;
+    billingDate?: string;
   };
 };
