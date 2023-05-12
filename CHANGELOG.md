@@ -1,5 +1,11 @@
 # @visa/3as-sdk
 
+## 1.2.0
+
+### Minor Changes
+
+- Add support for production environment
+
 ## 1.1.0
 
 ### Minor Changes
