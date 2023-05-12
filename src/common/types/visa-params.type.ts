@@ -5,6 +5,6 @@ export type VisaParams = {
     id: string;
     privateKey: string;
   };
-  env: "dev" | "stage";
+  env: "dev" | "stage" | "production";
   logLevel: LogLevel;
 };

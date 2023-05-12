@@ -9,7 +9,6 @@ export type Package = {
   period: Period;
   intpId: string;
   touchpoints: number;
-  trial: boolean;
   recommended: boolean;
   createdAt: string;
 };

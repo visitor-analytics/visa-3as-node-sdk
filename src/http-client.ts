@@ -10,7 +10,7 @@ axiosRetry(axios, { retries: 3 });
 export class HttpClient {
   DEV_API_GATEWAY_URI = "https://api-gateway.va-endpoint.com";
   STAGE_API_GATEWAY_URI = "https://stage-api-gateway.va-endpoint.com";
-  PROD_API_GATEWAY_URI = "";
+  PRODUCTION_API_GATEWAY_URI = "https://api-gateway.visitor-analytics.io";
 
   #host: string;
   #accessToken: AccessToken;
@@ -21,7 +21,7 @@ export class HttpClient {
   constructor(params: {
     readonly accessToken: AccessToken;
     readonly logLevel: LogLevel;
-    readonly env: "dev" | "stage";
+    readonly env: "dev" | "stage" | "production";
   }) {
     this.#http = axios;
 
@@ -31,6 +31,9 @@ export class HttpClient {
         break;
       case "stage":
         this.#host = this.STAGE_API_GATEWAY_URI;
+        break;
+      case "production":
+        this.#host = this.PRODUCTION_API_GATEWAY_URI;
         break;
       default:
         throw new Error("Unsupported env: " + params.env);

@@ -6,6 +6,9 @@ export type Website = {
   visaId: string;
   domain: string;
   packageId: string;
+  packageName: string;
+  inTrial: boolean;
+  hadTrial: boolean;
   visaTrackingCode: string;
   createdAt: string;
 };
