@@ -37,7 +37,6 @@ export class HttpClient {
         break;
       default:
         throw new Error("Unsupported env: " + params.env);
-        break;
     }
 
     this.#accessToken = params.accessToken;
