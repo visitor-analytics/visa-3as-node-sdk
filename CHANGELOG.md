@@ -1,5 +1,11 @@
 # @visa/3as-sdk
 
+## 1.3.0
+
+### Minor Changes
+
+- Added ProRate functionality by explicitly requesting it through a new bool parameter called `proRate` when using the upgrade subscription notification
+
 ## 1.2.0
 
 ### Minor Changes
