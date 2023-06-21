@@ -15,6 +15,7 @@ export type Website = {
   lastPackageChangeAt?: string;
   plannedDowngradePackageId?: string;
   plannedDowngradePackageName?: string;
+  plannedDowngradePackageInterval?: string;
 
   inTrial: boolean;
   hadTrial: boolean;
