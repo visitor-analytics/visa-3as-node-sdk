@@ -1,5 +1,11 @@
 # @visa/3as-sdk
 
+## 1.3.1
+
+### Patch Changes
+
+- Fix outdated types
+
 ## 1.3.0
 
 ### Minor Changes

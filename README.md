@@ -210,6 +210,7 @@ visa.subscriptions.upgrade({
   intpWebsiteId: INTP_WEBSITE_ID,
   packageId: PACKAGE_UUID,
   trial: true | false,
+  proRate: true | false,
 });
 ```
 
