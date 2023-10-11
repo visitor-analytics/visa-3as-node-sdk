@@ -260,3 +260,30 @@ visa.auth.generateINTPAccessToken();
 ```js
 visa.auth.generateINTPcAccessToken(INTP_CUSTOMER_ID);
 ```
+
+## Dashboard IFrame
+
+The IFrame is one of the main ways a user can interract with the data gathered for his website. The URL of the IFrame is [generated using the SDK](#generate-the-visitoranalytics-dashboard-iframe-url)
+
+The resulting URL can be further enhanced with query parameters:
+
+1. `allowUpgrade=true` - Show upgrade CTAs
+
+Upgrade buttons will be added to the Dashboard for all features that require a certain minimum package.
+Once the upgrade button is clicked, the iframe posts a message to the parent frame, containing the following payload: 
+
+
+```javascript
+{
+  "type": "UPGRADE_BUTTON_CLICKED",
+  "data": {
+    "intpWebsiteId": "", // string; external website id
+    "intpCustomerId": "", // string; customer id
+    "packageName": "", // string; current package name
+    "packageId": "", // string; current package id
+    "inTrial": true|false, // boolean;
+    "expiresAt": "", // string; expiry date in ISO 8601 format
+    "billingInterval": "monthly"|"yearly" // string;
+  }
+}
+```
