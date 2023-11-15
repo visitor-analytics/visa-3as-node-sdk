@@ -1,11 +1,11 @@
-# VisitorAnalytics 3AS Node SDK
+# TWIPLA 3AS Node SDK
 
-A simple API wrapper for integrating the Analysis as a Service (3AS) APIs provided by Visitor Analytics
+A simple API wrapper for integrating the Analysis as a Service (3AS) APIs provided by TWIPLA
 
 ## Getting started
 
 1. [Create an RSA Key Pair (PEM format)](#creating-an-rsa-key-pair)
-1. Send the resulting public key (`jwtRS256.key.pub`) to the Visitor Analytics Dev Team
+1. Send the resulting public key (`jwtRS256.key.pub`) to the TWIPLA Dev Team
 1. [Install the library](#installation)
 1. [Use the SDK instance](#how-to-use-the-library) to interract with the API
 
