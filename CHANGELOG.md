@@ -1,3 +1,12 @@
+# @visitor-analytics/3as-sdk
+
+## 2.0.0
+
+### Major Changes
+
+- Adds breaking change version of the Axios package
+- Adds methods for managing whitelisted domains
+
 # @visa/3as-sdk
 
 ## 1.3.2
