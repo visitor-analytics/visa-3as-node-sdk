@@ -1,13 +1,15 @@
 {
 	"name": "@visitor-analytics/3as-sdk",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "NodeJS SDK for 3AS Companies",
 	"author": "os@visitor-analytics.io",
 	"license": "MIT",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
 	"types": "dist/index.d.ts",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "tsup src/index.ts --format cjs,esm --dts",
 		"lint": "tsc",
