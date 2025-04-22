@@ -5,7 +5,8 @@ const createWebsiteSchema = joi
     intpWebsiteId: joi.string().required(),
     intpCustomerId: joi.string().required(),
     domain: joi.string().domain().required(),
-    packageId: joi.string().uuid().required(),
+    packageId: joi.string().uuid().optional(),
+    billingDate: joi.string().optional(),
   })
   .required();
 

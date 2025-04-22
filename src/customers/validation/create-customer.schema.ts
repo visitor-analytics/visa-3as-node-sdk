@@ -6,7 +6,7 @@ export const createCustomerSchema = Joi.object({
   website: {
     intpWebsiteId: Joi.string().required(),
     domain: Joi.string().domain().required(),
-    packageId: Joi.string().uuid().required(),
-    billingDate: Joi.string().isoDate().optional(),
+    packageId: Joi.string().uuid().optional(),
+    billingDate: Joi.string().optional(),
   },
 });

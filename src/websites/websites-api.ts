@@ -7,7 +7,7 @@ import { createWebsiteSchema } from "./validation";
 export class WebsitesApi {
   #path = "/v2/3as/websites";
 
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) { }
 
   async getByIntpWebsiteId(intpWebsiteId: string): Promise<Website> {
     const response = await this.httpClient.get<Website>(
@@ -25,10 +25,10 @@ export class WebsitesApi {
   ): Promise<PaginatedResponse<Website>> {
     const response = await this.httpClient.get<Website[]>(
       this.#path +
-        "?page=" +
-        pagination.page +
-        "&pageSize=" +
-        pagination.pageSize
+      "?page=" +
+      pagination.page +
+      "&pageSize=" +
+      pagination.pageSize
     );
 
     return {
