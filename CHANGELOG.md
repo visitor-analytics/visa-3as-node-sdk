@@ -1,5 +1,11 @@
 # @visitor-analytics/3as-sdk
 
+## 2.1.1
+
+### Patch Changes
+
+- remove validation schemas
+
 ## 2.1.0
 
 ### Minor Changes
