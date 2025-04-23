@@ -10,22 +10,16 @@ import { PackageApi } from "./packages/package-api";
 import { SubscriptionsApi } from "./noitifications/subscriptions/subscriptions-api";
 
 export class VisitorAnalytics {
-  // customers
   #customersApi: CustomersApi;
   #customerApi: CustomerApi;
-  // customer packages
   #packageApi: PackageApi;
   #packagesApi: PackagesApi;
-  // customer websites;
   #websiteApi: WebsiteApi;
   #websitesApi: WebsitesApi;
-  // notifications
-  // subscriptions
   #subscriptionApi: SubscriptionsApi;
 
   public auth: AuthUtils;
 
-  // http
   #httpClient: HttpClient;
 
   constructor(private readonly params: VisaParams) {
