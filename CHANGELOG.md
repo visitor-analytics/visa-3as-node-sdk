@@ -1,5 +1,11 @@
 # @visitor-analytics/3as-sdk
 
+## 2.1.2
+
+### Patch Changes
+
+- cleanup comments
+
 ## 2.1.1
 
 ### Patch Changes
