@@ -5,7 +5,7 @@ import { Package } from "./types/package.type";
 export class PackagesApi {
   #path: string = "/v2/3as/packages";
 
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) { }
 
   async list(): Promise<Package[]> {
     const response = await this.httpClient.get<Package[]>(this.#path);

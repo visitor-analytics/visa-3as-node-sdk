@@ -2,7 +2,6 @@ import { HttpClient } from "../http-client";
 import { Website } from "./types/website.type";
 import { PaginatedResponse } from "../common";
 import { CreateWebsite } from "./types/create-website.type";
-import { createWebsiteSchema } from "./validation";
 
 export class WebsitesApi {
   #path = "/v2/3as/websites";
@@ -38,8 +37,6 @@ export class WebsitesApi {
   }
 
   async create(createWebsite: CreateWebsite): Promise<Website> {
-    await createWebsiteSchema.validateAsync(createWebsite);
-
     const response = await this.httpClient.post<Website>(
       this.#path,
       createWebsite

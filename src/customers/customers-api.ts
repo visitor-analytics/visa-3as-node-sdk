@@ -2,16 +2,13 @@ import { PaginatedResponse } from "../common";
 import { HttpClient } from "../http-client";
 import { CreateCustomer } from "./types/create-customer.type";
 import { Customer } from "./types/customer.type";
-import { createCustomerSchema } from "./validation/create-customer.schema";
 
 export class CustomersApi {
   #path: string = "/v2/3as/customers";
 
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) { }
 
   async create(createCustomer: CreateCustomer): Promise<Customer> {
-    await createCustomerSchema.validateAsync(createCustomer);
-
     const response = await this.httpClient.post<Customer>(
       this.#path,
       createCustomer
@@ -28,10 +25,10 @@ export class CustomersApi {
   ): Promise<PaginatedResponse<Customer>> {
     const response = await this.httpClient.get<Customer[]>(
       this.#path +
-        "?page=" +
-        pagination.page +
-        "&pageSize=" +
-        pagination.pageSize
+      "?page=" +
+      pagination.page +
+      "&pageSize=" +
+      pagination.pageSize
     );
 
     return { items: response.getPayload(), metadata: response.getMetadata() };
