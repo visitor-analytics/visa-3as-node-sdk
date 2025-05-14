@@ -38,7 +38,7 @@ export class WebsitesApi {
 
   async create(createWebsite: CreateWebsite): Promise<Website> {
     const response = await this.httpClient.post<Website>(
-      this.#path,
+      "/v3/3as/websites",
       createWebsite
     );
 

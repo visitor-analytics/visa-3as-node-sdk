@@ -3,7 +3,7 @@ import { IFrameUtils } from "../common/iframe";
 import { HttpClient } from "../http-client";
 import { Website } from "../websites/types/website.type";
 
-export class CustomerApi {
+export class IntpcApi {
   #customerId: string = "";
 
   constructor(
@@ -11,7 +11,7 @@ export class CustomerApi {
     private readonly iframe: IFrameUtils
   ) {}
 
-  setCustomerId(customerId: string): CustomerApi {
+  setCustomerId(customerId: string): IntpcApi {
     if (!customerId) throw new Error("Missing customer id");
 
     this.#customerId = customerId;

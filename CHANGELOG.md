@@ -1,5 +1,45 @@
 # @visitor-analytics/3as-sdk
 
+## 3.0.0
+
+This is a release with **BREAKING** changes:
+
+- Add support for website/intpc subscriptions
+- Align internal nomenclature for 3AS:
+
+### Migration guide
+
+1. Replace `visa.customers.*` => `visa.intpcs.*`
+2. Replace `visa.customer(...)` => `visa.intpc(...)`
+3. Replace `visa.subscriptions.*` => `visa.websiteSubscriptions.*`
+4. To maintain current website subscriptions (previously the single subscription type available) behaviour, refactor `visa.websites.create` like this:
+   - Old signature:
+    ```js
+    visa.websites.create({
+        intpWebsiteId: INTP_WEBSITE_ID,
+        intpCustomerId: INTP_CUSTOMER_ID,
+        domain: INTP_WEBSITE_DOMAIN,
+        packageId: PACKAGE_UUID,
+        billingDate: ISO_DATE_STRING, // (optional, defaults to current time)
+    });
+    ```
+   - New signature:
+    ```js
+    visa.websites.create({
+        website: {
+            id: INTP_WEBSITE_ID,
+            domain: INTP_WEBSITE_DOMAIN,
+            package: {
+                id: PACKAGE_UUID,
+                billingDate: ISO_DATE_STRING, // (optional, defaults to current time)
+            }
+        },
+        intpc: {
+            id: INTP_CUSTOMER_ID,
+        },
+    });
+    ```
+
 ## 2.1.2
 
 ### Patch Changes

@@ -43,7 +43,7 @@ const visa = new VisitorAnalytics({
    The company that is integrating the analytics as a service solution (3AS)
 - **STPs (Server Touchpoints)**\
    Credits used to measure data usage for a given website
-- **Customer (INTPC integration partner customer)**\
+- **Intpc (INTPC integration partner customer)**\
    One user of the INTP, can have many websites
 - **Website**\
    The website where data will be tracked. It has a subscription with a package with a certain limit of STPs.
@@ -56,11 +56,31 @@ const visa = new VisitorAnalytics({
 
 Most endpoints that deal with customers or websites support some form of an ID which can be provided and then used for all following requests.
 
-For example creating a new customer with a website requires an `intpCustomerId` and an `intpWebsiteId`. These must be provided by the INTP and are intended to make integrations easier because there is no need to save any external IDs. Then when getting data about a customer the request is done using the same `intpCustomerId` provided on creation.
+For example creating a new customer with a website requires an `intpCustomerId`|`intpcId` and an `intpWebsiteId`. These must be provided by the INTP and are intended to make integrations easier because there is no need to save any external IDs. Then when getting data about a customer the request is done using the same `intpCustomerId` provided on creation.
 
-**Example implementation flow**
+### Subscription types
 
-1. Create a new customer with a website
+There are currently **two types of subscription** available:
+
+#### 1. `Website` Subscription
+
+- Applies to a **single website**.
+- Created using an **`intp` package**, which defines the subscription plan.
+- Can be billed **monthly** or **yearly**.
+- Each `website` subscription is tied to an **`intpc`**, which is the entity responsible for creating the website.
+
+#### 2. `Intpc` Subscription
+
+- Covers **one or more websites** under a single subscription.
+- Created using an **`intp` package**, which defines the subscription plan.
+- Can be billed **monthly** or **yearly**.
+- The **touchpoint limit** defined by the package is **shared across all associated websites**.
+- The `intpc` can **monitor individual usage** per website, providing detailed insights into how each site consumes touchpoints.
+- Ideal for managing multiple websites with a **centralized billing**.
+
+### Example implementation flow
+
+1. Create a new intpc with a website
 1. Inject the resulting tracking code in the website's HTML
 1. Use the SDK's [generate iframe url](#generate-the-visitoranalytics-dashboard-iframe-url) method to create an url
 1. Show an iframe to the user with the url created previously
@@ -70,63 +90,80 @@ For example creating a new customer with a website requires an `intpCustomerId` 
 
 ## Available APIs
 
-- [Customers](#customers-api)
-- [Customer](#customer-api)
+- [INTPCs](#intpcs-api)
+- [INTPC](#intpc-api)
 - [Package](#package-api)
 - [Packages](#packages-api)
 - [Website](#website-api)
 - [Websites](#websites-api)
 - [Utils](#utils-api)
 
-### Customers API
+### INTPCs API
 
 Integration partners (INTP) are able to get data about their customers (INTPc).
 
 #### List all available customers
 
 ```js
-visa.customers.list();
+visa.intpcs.list();
 ```
 
 #### Get a single customer by its INTP given id
 
 ```javascript
-visa.customers.getByIntpCustomerId(INTP_CUSTOMER_ID);
+visa.intpcs.getByIntpCustomerId(INTP_CUSTOMER_ID);
 ```
 
-#### Register a new customer
+#### Register and start an INTPc level subscription. This will allow subsequently added websites to consume from the same `touchpoint` pool provided by the `package` used during setup.
 
 ```javascript
-visa.customers.create({
+visa.intpcs.create({
+    intpCustomerId: INTP_CUSTOMER_ID,
+    email: INTP_CUSTOMER_EMAIL,
+    packageId: PACKAGE_UUID,
+    billingDate: ISO_DATE_STRING, // (optional, defaults to current time)
+    website: {
+        intpWebsiteId: INTP_WEBSITE_ID,
+        domain: INTP_WEBSITE_DOMAIN_URI,
+    },
+})
+```
+
+#### Register an INTPc and start a website level subscription. Each added website will have its own subscription.
+
+```javascript
+visa.intpcs.create({
   intpCustomerId: INTP_CUSTOMER_ID,
   email: INTP_CUSTOMER_EMAIL,
   website: {
     intpWebsiteId: INTP_WEBSITE_ID,
     domain: INTP_WEBSITE_DOMAIN_URI,
     packageId: PACKAGE_UUID,
-    billingDate: ISO_DATE_STRING, (optional, defaults to current time)
+    billingDate: ISO_DATE_STRING, // (optional, defaults to current time)
   },
 });
 ```
 
-### Customer API
+### INTPC API
+
+Integration partners (INTP) are able to get data about their customers (INTPc).
 
 #### List all websites belonging to an INTP Customer
 
 ```javascript
-visa.customer(INTP_CUSTOMER_ID).listWebsites();
+visa.intpc(INTP_CUSTOMER_ID).listWebsites();
 ```
 
 #### Delete a Customer belonging to an INTP
 
 ```js
-visa.customer(INTP_CUSTOMER_ID).delete();
+visa.intpc(INTP_CUSTOMER_ID).delete();
 ```
 
 #### Generate the VisitorAnalytics Dashboard IFrame Url
 
 ```js
-visa.customer(INTP_CUSTOMER_ID).generateIFrameDashboardUrl(INTP_WEBSITE_ID);
+visa.intpc(INTP_CUSTOMER_ID).generateIFrameDashboardUrl(INTP_WEBSITE_ID);
 ```
 
 ### Packages API
@@ -181,17 +218,56 @@ visa.websites.list();
 visa.websites.getByIntpWebsiteId(INTP_WEBSITE_ID);
 ```
 
-#### Create a website
+#### Create a website with its own subscription and attach it to an existing INTPc
 
 ```js
 visa.websites.create({
-  intpWebsiteId: INTP_WEBSITE_ID,
-  intpCustomerId: INTP_CUSTOMER_ID,
-  domain: INTP_WEBSITE_DOMAIN,
-  packageId: PACKAGE_UUID,
-  billingDate: ISO_DATE_STRING, (optional, defaults to current time)
+    website: {
+        id: INTP_WEBSITE_ID,
+        domain: INTP_WEBSITE_DOMAIN,
+        package: {
+            id: PACKAGE_UUID,
+            billingDate: ISO_DATE_STRING, // (optional, defaults to current time)
+        }
+    },
+    intpc: {
+        id: INTP_CUSTOMER_ID,
+    },
 });
 ```
+
+
+#### Create a website and attach it to an existing INTPc subscription. This website, alongside other pre-existing website will consume `touchpoints` from the same pool.
+
+```js
+visa.websites.create({
+    website: {
+        id: INTP_WEBSITE_ID,
+        domain: INTP_WEBSITE_DOMAIN,
+    },
+    intpc: {
+        id: INTP_CUSTOMER_ID,
+    },
+});
+```
+
+#### Create a website with its own `30 day, unlimited free trial` subscription and attach it to an INTPc. After the 30 day free trial ends, the subscription will be downgraded to the `free` package.
+
+```js
+visa.websites.create({
+    website: {
+        id: INTP_WEBSITE_ID,
+        domain: INTP_WEBSITE_DOMAIN,
+    },
+    intpc: {
+        id: INTP_CUSTOMER_ID,
+    },
+    opts: {
+        uft: true,
+    }
+});
+```
+
 
 ### Website API
 
@@ -219,12 +295,12 @@ visa.website(INTP_WEBSITE_ID)->deleteWhitelistedDomain(STRING);
 visa.website(INTP_WEBSITE_ID)->listWhitelistedDomains();
 ```
 
-### API for managing subscription state
+### API for managing a subscription of type `website`
 
 #### Upgrade - immediately applies a higher stp count package to the subscription
 
 ```js
-visa.subscriptions.upgrade({
+visa.websiteSubscriptions.upgrade({
   intpWebsiteId: INTP_WEBSITE_ID,
   packageId: PACKAGE_UUID,
   trial: true | false,
@@ -235,7 +311,7 @@ visa.subscriptions.upgrade({
 #### Downgrade - auto-renew the subscription at the end of the current billing interval to a new lower stp count package
 
 ```js
-visa.subscriptions.downgrade({
+visa.websiteSubscriptions.downgrade({
   intpWebsiteId: INTP_WEBSITE_ID,
   packageId: PACKAGE_UUID,
 });
@@ -244,7 +320,7 @@ visa.subscriptions.downgrade({
 #### Cancel - disable the subscription auto-renewal at the end of the current billing interval
 
 ```js
-visa.subscriptions.cancel({
+visa.websiteSubscriptions.cancel({
   intpWebsiteId: INTP_WEBSITE_ID,
 });
 ```
@@ -252,16 +328,62 @@ visa.subscriptions.cancel({
 #### Resume - re-enable the subscription auto-renewal at the end of the current billing interval
 
 ```js
-visa.subscriptions.resume({
+visa.websiteSubscriptions.resume({
   intpWebsiteId: INTP_WEBSITE_ID,
 });
 ```
 
 #### Deactivate - immediately disables the subscription, reversible by an upgrade
 
-```php
-visa.subscriptions.deactivate({
+```js
+visa.websiteSubscriptions.deactivate({
   intpWebsiteId: INTP_WEBSITE_ID,
+});
+```
+
+### API for managing a subscription of type `intpc`
+
+#### Upgrade - immediately applies a higher stp count package to the subscription
+
+```js
+visa.intpcSubscriptions.upgrade({
+  intpcId: INTP_CUSTOMER_ID,
+  packageId: PACKAGE_UUID,
+  trial: true | false,
+  proRate: true | false,
+});
+```
+
+#### Downgrade - auto-renew the subscription at the end of the current billing interval to a new lower stp count package
+
+```js
+visa.intpcSubscriptions.downgrade({
+    intpcId: INTP_CUSTOMER_ID,
+  packageId: PACKAGE_UUID,
+});
+```
+
+#### Cancel - disable the subscription auto-renewal at the end of the current billing interval
+
+```js
+visa.intpcSubscriptions.cancel({
+    intpcId: INTP_CUSTOMER_ID,
+});
+```
+
+#### Resume - re-enable the subscription auto-renewal at the end of the current billing interval
+
+```js
+visa.intpcSubscriptions.resume({
+    intpcId: INTP_CUSTOMER_ID,
+});
+```
+
+#### Deactivate - immediately disables the subscription, reversible by an upgrade
+
+```js
+visa.intpcSubscriptions.deactivate({
+    intpcId: INTP_CUSTOMER_ID,
 });
 ```
 
@@ -288,8 +410,7 @@ The resulting URL can be further enhanced with query parameters:
 1. `allowUpgrade=true` - Show upgrade CTAs
 
 Upgrade buttons will be added to the Dashboard for all features that require a certain minimum package.
-Once the upgrade button is clicked, the iframe posts a message to the parent frame, containing the following payload: 
-
+Once the upgrade button is clicked, the iframe posts a message to the parent frame, containing the following payload:
 
 ```javascript
 {
