@@ -1,9 +1,9 @@
 import { mock, mockClear } from "jest-mock-extended";
 import { HttpClient } from "../http-client";
-import { CustomersApi } from ".";
+import { IntpcsApi } from ".";
 
 describe("Customer(s)", () => {
-  const customerExternalId = "ae14772b-4df0-4fe9-89e1-c7f8bb2378da";
+  const intpcExternalId = "ae14772b-4df0-4fe9-89e1-c7f8bb2378da";
   let httpClient: HttpClient;
 
   beforeEach(() => {
@@ -14,20 +14,20 @@ describe("Customer(s)", () => {
     mockClear(httpClient);
   });
 
-  describe("Customers-API", () => {
-    let customersApi: CustomersApi;
+  describe("Intpc-API", () => {
+    let intpcsApi: IntpcsApi;
 
     beforeEach(() => {
-      customersApi = new CustomersApi(httpClient);
+      intpcsApi = new IntpcsApi(httpClient);
     });
 
     it("should call http client get when list() is called", () => {
-      customersApi.list();
+      intpcsApi.list();
       expect(httpClient.get).toHaveBeenCalled();
     });
 
     it("should call http client get when getById() is called", () => {
-      customersApi.getByIntpCustomerId(customerExternalId);
+      intpcsApi.getByIntpCustomerId(intpcExternalId);
       expect(httpClient.get).toHaveBeenCalled();
     });
   });

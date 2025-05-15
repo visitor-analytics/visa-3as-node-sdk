@@ -1,22 +1,23 @@
 import { HttpClient } from "./http-client";
 import { VisaParams } from "./common";
-import { CustomerApi } from "./customers";
-import { CustomersApi } from "./customers";
+import { IntpcApi } from "./intpcs";
+import { IntpcsApi } from "./intpcs";
 import { WebsiteApi, WebsitesApi } from "./websites";
 import { PackagesApi } from "./packages";
 import { AuthUtils } from "./common/auth/auth";
 import { IFrameUtils } from "./common/iframe";
 import { PackageApi } from "./packages/package-api";
-import { SubscriptionsApi } from "./noitifications/subscriptions/subscriptions-api";
+import {IntpcSubscriptionsApi, WebsiteSubscriptionsApi} from "./subscriptions/subscriptions-api";
 
 export class VisitorAnalytics {
-  #customersApi: CustomersApi;
-  #customerApi: CustomerApi;
+  #intpcApi: IntpcApi;
+  #intpcsApi: IntpcsApi;
   #packageApi: PackageApi;
   #packagesApi: PackagesApi;
   #websiteApi: WebsiteApi;
   #websitesApi: WebsitesApi;
-  #subscriptionApi: SubscriptionsApi;
+  #websiteSubscriptionApi: WebsiteSubscriptionsApi;
+  #intpcSubscriptionApi: IntpcSubscriptionsApi;
 
   public auth: AuthUtils;
 
@@ -31,11 +32,11 @@ export class VisitorAnalytics {
       logLevel: params.logLevel,
     });
 
-    this.#customerApi = new CustomerApi(
+    this.#intpcApi = new IntpcApi(
       this.#httpClient,
       new IFrameUtils(this.auth, params.env)
     );
-    this.#customersApi = new CustomersApi(this.#httpClient);
+    this.#intpcsApi = new IntpcsApi(this.#httpClient);
 
     this.#websiteApi = new WebsiteApi(this.#httpClient);
     this.#websitesApi = new WebsitesApi(this.#httpClient);
@@ -43,15 +44,16 @@ export class VisitorAnalytics {
     this.#packageApi = new PackageApi(this.#httpClient);
     this.#packagesApi = new PackagesApi(this.#httpClient);
 
-    this.#subscriptionApi = new SubscriptionsApi(this.#httpClient);
+    this.#websiteSubscriptionApi = new WebsiteSubscriptionsApi(this.#httpClient);
+    this.#intpcSubscriptionApi = new IntpcSubscriptionsApi(this.#httpClient);
   }
 
-  get customers(): CustomersApi {
-    return this.#customersApi;
+  get intpcs(): IntpcsApi {
+    return this.#intpcsApi;
   }
 
-  customer(externalId: string): CustomerApi {
-    return this.#customerApi.setCustomerId(externalId);
+  intpc(externalId: string): IntpcApi {
+    return this.#intpcApi.setCustomerId(externalId);
   }
 
   get websites(): WebsitesApi {
@@ -70,7 +72,11 @@ export class VisitorAnalytics {
     return this.#packageApi.setPackageId(id);
   }
 
-  get subscriptions(): SubscriptionsApi {
-    return this.#subscriptionApi;
+  get websiteSubscriptions(): WebsiteSubscriptionsApi {
+    return this.#websiteSubscriptionApi;
+  }
+
+  get intpcSubscriptions(): IntpcSubscriptionsApi {
+    return this.#intpcSubscriptionApi;
   }
 }

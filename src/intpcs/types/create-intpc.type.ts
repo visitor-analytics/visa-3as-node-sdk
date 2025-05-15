@@ -1,4 +1,4 @@
-export type CreateCustomer = {
+export type CreateIntpc = {
   intpCustomerId: string;
   email: string;
   website: {
