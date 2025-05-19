@@ -1,5 +1,13 @@
 # @visitor-analytics/3as-sdk
 
+## 3.0.2
+
+- Export all typescript types
+
+## 3.0.1
+
+- Small bug fixes
+
 ## 3.0.0
 
 This is a release with **BREAKING** changes:
