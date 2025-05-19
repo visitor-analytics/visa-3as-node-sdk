@@ -28,8 +28,10 @@ export class WebsiteApi {
   }
 
   public async deleteWhitelistedDomain(domain: string): Promise<void> {
-    await this.httpClient.delete<void>(
-      `/v2/3as/websites/${this.#externalWebsiteId}/whitelisted-domains/${encodeURIComponent(domain)}`
+    await this.httpClient.update<void>(
+      `/v2/3as/websites/${this.#externalWebsiteId}/whitelisted-domains/`,{
+        domain
+        }
     );
   }
 

@@ -12,6 +12,7 @@ export type Website = {
   packageId: string;
   packageName: string;
   billingInterval: string;
+  billingMode: string;
   lastPackageChangeAt?: string;
   plannedDowngradePackageId?: string;
   plannedDowngradePackageName?: string;

@@ -4,7 +4,7 @@ import { CreateIntpc } from "./types/create-intpc.type";
 import { Intpc } from "./types/intpc.type";
 
 export class IntpcsApi {
-  #path: string = "/v2/3as/intpcs";
+  #path: string = "/v2/3as/customers";
 
   constructor(private readonly httpClient: HttpClient) { }
 
