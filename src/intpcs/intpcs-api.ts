@@ -1,17 +1,17 @@
 import { PaginatedResponse } from "../common";
 import { HttpClient } from "../http-client";
-import { CreateCustomer } from "./types/create-customer.type";
-import { Customer } from "./types/customer.type";
+import { CreateIntpc } from "./types/create-intpc.type";
+import { Intpc } from "./types/intpc.type";
 
-export class CustomersApi {
+export class IntpcsApi {
   #path: string = "/v2/3as/customers";
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  async create(createCustomer: CreateCustomer): Promise<Customer> {
-    const response = await this.httpClient.post<Customer>(
+  async create(createIntpc: CreateIntpc): Promise<Intpc> {
+    const response = await this.httpClient.post<Intpc>(
       this.#path,
-      createCustomer
+      createIntpc
     );
 
     return response.getPayload();
@@ -22,8 +22,8 @@ export class CustomersApi {
       page: number;
       pageSize: number;
     } = { page: 0, pageSize: 10 }
-  ): Promise<PaginatedResponse<Customer>> {
-    const response = await this.httpClient.get<Customer[]>(
+  ): Promise<PaginatedResponse<Intpc>> {
+    const response = await this.httpClient.get<Intpc[]>(
       this.#path +
       "?page=" +
       pagination.page +
@@ -34,9 +34,9 @@ export class CustomersApi {
     return { items: response.getPayload(), metadata: response.getMetadata() };
   }
 
-  async getByIntpCustomerId(intpCustomerId: string): Promise<Customer> {
+  async getByIntpCustomerId(intpCustomerId: string): Promise<Intpc> {
     return (
-      await this.httpClient.get<Customer>(this.#path + "/" + intpCustomerId)
+      await this.httpClient.get<Intpc>(this.#path + "/" + intpCustomerId)
     ).getPayload();
   }
 }

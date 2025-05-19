@@ -1,7 +1,16 @@
 export type CreateWebsite = {
-  intpWebsiteId: string;
-  intpCustomerId: string;
-  domain: string;
-  packageId?: string;
-  billingDate?: string;
+  website: {
+    id: string
+    domain: string;
+    package?: {
+      id: string
+      billingDate?: string
+    }
+  };
+  intpc: {
+    id: string
+  };
+  opts?: {
+    uft: boolean
+  }
 };
