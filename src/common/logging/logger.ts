@@ -1,6 +1,5 @@
 import pino, { Logger as PinoLogger } from "pino";
 import { LogLevel } from "./types/log-levels";
-import { pinoPretty } from "./pino-pretty";
 import { LoggerOptions } from "./types/logger-options";
 
 export class Logger {
@@ -8,7 +7,7 @@ export class Logger {
   #level: LogLevel;
 
   constructor(options: LoggerOptions) {
-    this.#pino = options.env === "dev" ? pinoPretty : pino();
+    this.#pino = pino();
     this.#level = options.level;
   }
 
